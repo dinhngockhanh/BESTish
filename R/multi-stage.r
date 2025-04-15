@@ -14,64 +14,52 @@ library(zoo)
 library(numDeriv)
 
 # 1) SINGLE-RUN TAU-LEAP SIMULATION
-simulate_continuous_moran_tau <- function(
-    r, # initial # of type-0 cells
-    lambda_vec, # e.g. c(lambda0, lambda1, lambda2)
-    u_vec, # e.g. c(u0, u1, u2)
-    alpha, # e.g. 1.0
-    max_time, # e.g. 100
-    tau, # step for tau-leaping
-    seed = NULL) {
+simulate_continuous_moran_tau <- function(r,
+                                          lambda_vec,
+                                          u_vec,
+                                          alpha,
+                                          max_time,
+                                          tau = 0.001,
+                                          seed = NULL) {
     if (!is.null(seed)) set.seed(seed)
-
+    #---Initiate the system
     n_types <- length(lambda_vec)
     state <- numeric(n_types)
-    state[1] <- r # all cells in type-0
-
+    state[1] <- r
     t <- 0
-    record_time <- c(t)
-    record_state <- matrix(state, nrow = 1)
-
-    birth_no_mut <- (1 - u_vec) * lambda_vec
-    birth_mut <- u_vec * lambda_vec
-
-    while (t < max_time) {
+    #---Tau-leaping algorithm
+    record_time <- seq(0, max_time, by = tau)
+    record_state <- matrix(NA, nrow = length(record_time), ncol = n_types)
+    record_state[1, ] <- state
+    for (index in 2:length(record_time)) {
         N_total <- sum(state)
-        if (N_total <= 0) break
-
-        # (A) Divisions w/o mutation
-        divisions <- rpois(n_types, birth_no_mut * state * tau)
-        # (B) Mutations
-        mutations <- rpois(n_types, birth_mut * state * tau)
-        # (C) Deaths
-        death_rate <- alpha * sum(birth_no_mut * state)
-        deaths <- rpois(n_types, death_rate * (state / N_total) * tau)
-
-        t <- t + tau
-        new_state <- state + divisions - mutations - deaths
-
-        # Shift mutated cells from type j -> j+1
-        for (j in seq_len(n_types)) {
-            if (j < n_types) {
-                new_state[j + 1] <- new_state[j + 1] + mutations[j]
-            } else {
-                new_state[j] <- new_state[j] + mutations[j]
-            }
+        if (N_total <= 0) {
+            record_time <- record_time[1:index]
+            record_state <- record_state[1:index, ]
+            break
         }
-
-        new_state[new_state < 0] <- 0
-        state <- new_state
-
-        record_time <- c(record_time, t)
-        record_state <- rbind(record_state, state)
+        #   Simulate number of divisions into same compartments
+        divisions <- rpois(n_types, (1 - u_vec) * lambda_vec * state * tau)
+        #   Simulate number of mutations into new compartments
+        mutations <- rpois(n_types, u_vec * lambda_vec * state * tau)
+        #   Simulate death counts
+        deaths <- rpois(n_types, alpha * sum((1 - u_vec) * lambda_vec * state) * state / sum(state) * tau)
+        #   Update time
+        t <- record_time[index]
+        #   Update compartment cell counts
+        state <- state - deaths + divisions - mutations +
+            c(0, mutations[1:(length(mutations) - 1)])
+        state[state < 0] <- 0
+        #   Record state and time
+        record_state[index, ] <- state
     }
-
+    #   Output system states and times
     out_df <- data.frame(time = record_time)
     for (j in seq_len(n_types)) {
         out_df[[paste0("N", j - 1)]] <- record_state[, j]
         out_df[[paste0("Nbar", j - 1)]] <- record_state[, j] / r
     }
-    out_df
+    return(out_df)
 }
 
 # My code does n_types < length(lambda(lambda_vec) but then in usage it is always 4.
@@ -80,18 +68,18 @@ simulate_continuous_moran_tau <- function(
 # otherwise the structure inside is basically same.
 
 # 2) MULTIPLE REPLICATES
-run_replicates <- function(
-    n_reps,
-    r,
-    lambda_vec,
-    u_vec,
-    alpha,
-    max_time,
-    tau,
-    seed = 123) {
+run_replicates <- function(n_reps,
+                           r,
+                           lambda_vec,
+                           u_vec,
+                           alpha,
+                           max_time,
+                           tau,
+                           seed = 123) {
     set.seed(seed)
     sim_list <- vector("list", n_reps)
     for (i in seq_len(n_reps)) {
+        print(i)
         sim_i <- simulate_continuous_moran_tau(r, lambda_vec, u_vec, alpha, max_time, tau)
         sim_i$replicate <- i
         sim_list[[i]] <- sim_i
@@ -99,53 +87,60 @@ run_replicates <- function(
     dplyr::bind_rows(sim_list)
 }
 
-# I think this part is also same structure.
-
-# 3) SOLVE THE ODE FOR THE MEAN (ALPHA=1)
-two_hit_ode_mean <- function(t, state, params) {
-    N0 <- state[1]
-    N1 <- state[2]
-    N2 <- state[3]
-
-    w0 <- params$w[1]
-    v0 <- params$v[1]
-    w1 <- params$w[2]
-    v1 <- params$v[2]
-    w2 <- params$w[3]
-    v2 <- params$v[3]
-
-    sumN <- N0 + N1 + N2
-    sum_wv <- (w0 + v0) * N0 + (w1 + v1) * N1 + (w2 + v2) * N2
-
-    dN0 <- w0 * N0 - (N0 / sumN) * sum_wv
-    dN1 <- w1 * N1 + v0 * N0 - (N1 / sumN) * sum_wv
-    dN2 <- w2 * N2 + v1 * N1 - (N2 / sumN) * sum_wv
-    list(c(dN0, dN1, dN2))
+mean_ODE_equations <- function(t,
+                               state,
+                               params) {
+    n_comp <- length(state)
+    w <- params$w
+    v <- params$v
+    sumN <- sum(state)
+    # sum_wv = sum( (w_j+v_j)*N_j )
+    sum_wv <- 0
+    for (j in seq_len(n_comp)) {
+        sum_wv <- sum_wv + (w[j] + v[j]) * state[j]
+    }
+    dN <- numeric(n_comp)
+    dN[1] <- w[1] * state[1] - (state[1] / sumN) * sum_wv
+    for (j in 2:n_comp) {
+        dN[j] <- w[j] * state[j] + v[j - 1] * state[j - 1] - (state[j] / sumN) * sum_wv
+    }
+    list(dN)
 }
 
-solve_mean_ode <- function(lambda_vec, u_vec, max_time, dt = 0.1) {
+mean_ODE_solver <- function(lambda_vec,
+                            u_vec,
+                            max_time,
+                            dt = 0.1) {
     w <- (1 - 2 * u_vec) * lambda_vec
     v <- u_vec * lambda_vec
     params <- list(w = w, v = v)
 
-    state_init <- c(1, 0, 0)
+    n_comp <- length(lambda_vec)
+    state_init <- numeric(n_comp)
+    state_init[1] <- 1
+
     times <- seq(0, max_time, by = dt)
 
     ode_out <- deSolve::ode(
         y     = state_init,
         times = times,
-        func  = two_hit_ode_mean,
+        func  = mean_ODE_equations,
         parms = params
     )
 
     df <- as.data.frame(ode_out)
-    names(df)[2:4] <- c("Nbar0", "Nbar1", "Nbar2")
+    for (j in seq_len(n_comp)) {
+        names(df)[j + 1] <- paste0("Nbar", j - 1)
+    }
     df
 }
 
-ode_objective_var <- function(t, state, params) {
+variance_ODE_equations <- function(t,
+                                   state,
+                                   params) {
     f <- function(x) {
-        output <- params$w * x + c(0, params$v[1:(params$nCompartments - 1)] * x[1:(params$nCompartments - 1)]) - params$alpha * x / sum(x) * sum((params$w + params$v) * x)
+        output <- params$w * x + c(0, params$v[1:(params$nCompartments - 1)] * x[1:(params$nCompartments - 1)]) -
+            params$alpha * x / sum(x) * sum((params$w + params$v) * x)
         return(output)
     }
 
@@ -154,7 +149,9 @@ ode_objective_var <- function(t, state, params) {
     tmp <- which(params$mean_ode_df$time <= t)
     N <- as.numeric(params$mean_ode_df[tmp[length(tmp)], paste0("Nbar", 0:(params$nCompartments - 1))])
 
-    S_diag <- (params$w + 2 * params$v) * N + params$alpha * sum((params$w + params$v) * N) * N / sum(N) + c(0, params$v[1:(params$nCompartments - 1)] * N[1:(params$nCompartments - 1)])
+    S_diag <- (params$w + 2 * params$v) * N +
+        params$alpha * sum((params$w + params$v) * N) * N / sum(N) +
+        c(0, params$v[1:(params$nCompartments - 1)] * N[1:(params$nCompartments - 1)])
     S_offdiag <- -params$v[1:(params$nCompartments - 1)] * N[1:(params$nCompartments - 1)]
     S <- matrix(0, nrow = params$nCompartments, ncol = params$nCompartments)
     for (j in 1:params$nCompartments) S[j, j] <- S_diag[j]
@@ -162,11 +159,10 @@ ode_objective_var <- function(t, state, params) {
 
     A <- jacobian(f, N)
     dVar <- A %*% V + t(A %*% V) + S
-
     list(dVar)
 }
 
-solve_variance_ode <- function(mean_ode_df, lambda_vec, u_vec, alpha) {
+variance_ODE_solver <- function(mean_ode_df, lambda_vec, u_vec, alpha) {
     w <- (1 - 2 * u_vec) * lambda_vec
     v <- u_vec * lambda_vec
     nCompartments <- ncol(mean_ode_df) - 1
@@ -178,11 +174,10 @@ solve_variance_ode <- function(mean_ode_df, lambda_vec, u_vec, alpha) {
     params$alpha <- alpha
     params$mean_ode_df <- mean_ode_df
 
-
     ode_out <- deSolve::ode(
         y     = rep(0, nCompartments^2),
         times = mean_ode_df$time,
-        func  = ode_objective_var,
+        func  = variance_ODE_equations,
         parms = params
     )
 
@@ -195,16 +190,14 @@ solve_variance_ode <- function(mean_ode_df, lambda_vec, u_vec, alpha) {
     }
     names(variance_matrix)[2:ncol(variance_matrix)] <- df_names
 
-
     res <- data.frame(time = mean_ode_df$time)
     for (i in 0:(nCompartments - 1)) {
         res[[paste0("varNhat", i, "_the")]] <- variance_matrix[[paste0("var_", i, "_", i)]]
     }
-    print(res)
     return(res)
 }
 
-solve_variance_ode_OLD <- function(mean_ode_df, lambda_vec, u_vec, alpha) {
+variance_ODE_solver_OLD <- function(mean_ode_df, lambda_vec, u_vec, alpha) {
     w <- (1 - 2 * u_vec) * lambda_vec
     v <- u_vec * lambda_vec
     nCompartments <- ncol(mean_ode_df) - 1
