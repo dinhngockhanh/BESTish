@@ -4,11 +4,11 @@ library(VariantAnnotation)
 # ------------------------------------------ Working directory for Keito
 wd <- "/Users/keitotaketomi/Documents/DriverSelectionSweep/"
 # ------------------------------------------ Working directory for Khanh
-wd <- "/Users/dinhngockhanh/My Drive (knd2127@columbia.edu)/RESEARCH AND EVERYTHING/Projects/GITHUB/DriverSelectionSweep/"
+# wd <- "/Users/dinhngockhanh/My Drive (knd2127@columbia.edu)/RESEARCH AND EVERYTHING/Projects/GITHUB/DriverSelectionSweep/"
 # ======================================================================
 cancer_type <- "Ovary-AdenoCA"
 #---Input COSMIC mutation data
-vcf_file <- paste0("data/COSMIC/Cosmic_NonCodingVariants_Vcf_v101_GRCh38/Cosmic_NonCodingVariants_v101_GRCh38.vcf")
+vcf_file <- paste0(wd,"data/COSMIC/Cosmic_NonCodingVariants_v101_GRCh38.vcf")
 vcf_data <- readVcf(vcf_file, "hg38")
 
 
