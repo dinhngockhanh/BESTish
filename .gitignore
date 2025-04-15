@@ -1,0 +1,25 @@
+# R specific
+.Rhistory
+.RData
+.Rproj.user/
+.Rproj
+.Ruserdata
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.swp
+*.bak
+*.old
+
+# Output files
+*.pdf
+*.png
+
+# Directories
+data/PCAWG/
+vignettes/kidney_paprcc_wgd_false/
+vignettes/liver_hcc_wgd_false/
+vignettes/lung_scc_wgd_false/
