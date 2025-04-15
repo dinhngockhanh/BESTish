@@ -17,6 +17,7 @@
 # Output files
 *.pdf
 *.png
+*.DS_Store
 
 # Directories
 data/PCAWG/
