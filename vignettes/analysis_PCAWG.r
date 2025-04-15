@@ -1,57 +1,34 @@
-library(dplyr)   
-library(readr)   
+library(dplyr)
+library(readr)
+library(VariantAnnotation)
+# ------------------------------------------ Working directory for Keito
+wd <- "/Users/keitotaketomi/Documents/DriverSelectionSweep/"
+# ------------------------------------------ Working directory for Khanh
+wd <- "/Users/dinhngockhanh/My Drive (knd2127@columbia.edu)/RESEARCH AND EVERYTHING/Projects/GITHUB/DriverSelectionSweep/"
+# ======================================================================
+cancer_type <- "Ovary-AdenoCA"
+#---Input COSMIC mutation data
+vcf_file <- paste0("data/COSMIC/Cosmic_NonCodingVariants_Vcf_v101_GRCh38/Cosmic_NonCodingVariants_v101_GRCh38.vcf")
+vcf_data <- readVcf(vcf_file, "hg38")
 
-icgc_file <- "/Users/keitotaketomi/Documents/DriverSelectionSweep/data/PCAWG/ICGC_sample_information.csv"
 
-all_csv_dir <- "/Users/keitotaketomi/Documents/DriverSelectionSweep/data/PCAWG"
-
+#---Input mutational information from ICGC
+icgc_file <- paste0(wd, "/data/PCAWG/ICGC_sample_information.csv")
 icgc_data <- read_csv(file = icgc_file, guess_max = 100000)
-
-print(colnames(icgc_data))
-
+all_csv_dir <- paste0(wd, "/data/PCAWG")
 files_in_dir <- list.files(all_csv_dir, full.names = TRUE)
-
 matching_files <- files_in_dir[grepl("_all\\.csv$", files_in_dir)]
-message("Files matching '_all.csv':")
-print(matching_files)
-
 file_ids <- sub("_all\\.csv$", "", basename(matching_files))
-message("Extracted Sample IDs from filenames:")
-print(file_ids)
-
-ovary_data <- icgc_data %>% 
-  filter(histology_abbreviation == "Ovary-AdenoCA",
-         aliquot_id %in% file_ids)
-
-if (nrow(ovary_data) == 0) {
-  stop("No Ovary-AdenoCA records with matching _all.csv files found. Check sample IDs and file naming.")
-}
-
-matched_ids <- unique(ovary_data$aliquot_id)
-message("Matched aliquot IDs to process:")
-print(matched_ids)
-
+cancer_type_data <- icgc_data %>%
+    filter(
+        histology_abbreviation == cancer_type,
+        aliquot_id %in% file_ids
+    )
+matched_ids <- unique(cancer_type_data$aliquot_id)
 for (aliquot in matched_ids) {
-  # Construct the full path for this aliquot's _all.csv file
-  csv_file <- file.path(all_csv_dir, paste0(aliquot, "_all.csv"))
-  
-  if (file.exists(csv_file)) {
-    message("Processing file: ", csv_file)
-    
-    # Read the _all.csv file 
-    all_data <- read_csv(file = csv_file, guess_max = 100000)
-    
-    # Filter: keep rows where 'cosmic' is not NA
-    filtered_data <- all_data %>% filter(!is.na(cosmic))
-    
-    # Write the filtered data to a new CSV file in the same directory
-    output_file <- file.path(all_csv_dir, paste0(aliquot, "_all_filtered.csv"))
-    write_csv(filtered_data, output_file)
-    
-    message("Filtered data written to: ", output_file)
-  } else {
-    warning("File not found for aliquot: ", aliquot, " (Expected: ", csv_file, ")")
-  }
+    csv_file <- file.path(all_csv_dir, paste0(aliquot, "_all.csv"))
+    if (file.exists(csv_file)) {
+        all_data <- read_csv(file = csv_file, guess_max = 100000)
+        filtered_data <- all_data %>% filter(!is.na(cosmic))
+    }
 }
-
-message("Processing complete.")
