@@ -21,6 +21,7 @@
 
 # Directories
 data/PCAWG/
+data/COSMIC/
 vignettes/kidney_paprcc_wgd_false/
 vignettes/liver_hcc_wgd_false/
 vignettes/lung_scc_wgd_false/
