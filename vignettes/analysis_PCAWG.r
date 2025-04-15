@@ -8,7 +8,7 @@ wd <- "/Users/keitotaketomi/Documents/DriverSelectionSweep/"
 # ======================================================================
 cancer_type <- "Ovary-AdenoCA"
 #---Input COSMIC mutation data
-vcf_file <- paste0(wd,"data/COSMIC/Cosmic_NonCodingVariants_v101_GRCh38.vcf")
+vcf_file <- paste0(wd, "data/COSMIC/Cosmic_NonCodingVariants_v101_GRCh38.vcf")
 vcf_data <- readVcf(vcf_file, "hg38")
 
 
@@ -30,5 +30,6 @@ for (aliquot in matched_ids) {
     if (file.exists(csv_file)) {
         all_data <- read_csv(file = csv_file, guess_max = 100000)
         filtered_data <- all_data %>% filter(!is.na(cosmic))
+        print(nrow(filtered_data))
     }
 }
