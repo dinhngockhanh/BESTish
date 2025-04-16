@@ -1,15 +1,24 @@
 library(dplyr)
 library(readr)
+# BiocManager::install("VariantAnnotation")
 library(VariantAnnotation)
 # ------------------------------------------ Working directory for Keito
-# wd <- "/Users/keitotaketomi/Documents/DriverSelectionSweep/"
+wd <- "/Users/keitotaketomi/Documents/DriverSelectionSweep/"
 # ------------------------------------------ Working directory for Khanh
-wd <- "/Users/dinhngockhanh/My Drive (knd2127@columbia.edu)/RESEARCH AND EVERYTHING/Projects/GITHUB/DriverSelectionSweep/"
+# wd <- "/Users/dinhngockhanh/My Drive (knd2127@columbia.edu)/RESEARCH AND EVERYTHING/Projects/GITHUB/DriverSelectionSweep/"
 # ======================================================================
 cancer_type <- "Ovary-AdenoCA"
-# #---Input COSMIC mutation data
-# vcf_file <- paste0(wd, "data/COSMIC/Cosmic_NonCodingVariants_v101_GRCh38.vcf")
-# vcf_data <- readVcf(vcf_file, "hg38")
+# # #---Input COSMIC mutation data
+# cosmic_file <- paste0(wd, "data/COSMIC/Cosmic_NonCodingVariants_v101_GRCh38.vcf")
+# cosmic_data <- readVcf(vcf_file, "hg38")
+# cosmic_df<- data.frame(
+#     LEGACY_ID=info(cosmic_data)$LEGACY_ID,
+#     GENE=info(cosmic_data)$GENE
+# )
+# if(any(is.na(cosmic_df$GENE))) cosmic_df<- cosmic_df[!is.na(cosmic_df$GENE),]
+# cosmic_df <- cosmic_df %>%
+#     group_by(LEGACY_ID) %>%
+#     summarise(GENE = paste(unique(GENE), collapse = ","), .groups = "drop")
 #---Input mutational information from ICGC
 icgc_file <- paste0(wd, "/data/PCAWG/ICGC_sample_information.csv")
 icgc_data <- read_csv(file = icgc_file, guess_max = 100000)
@@ -22,33 +31,22 @@ cancer_type_data <- icgc_data %>%
         histology_abbreviation == cancer_type,
         aliquot_id %in% file_ids
     )
+output_file <- file.path(wd, paste0("vignettes/", cancer_type, "_clinical_information.csv"))
+write_csv(cancer_type_data, output_file)
 matched_ids <- unique(cancer_type_data$aliquot_id)
 all_aliquots <- c()
 for (aliquot in matched_ids) {
     csv_file <- file.path(all_csv_dir, paste0(aliquot, "_all.csv"))
-    print("===================================================")
-    print(aliquot)
     if (file.exists(csv_file)) {
         all_data <- read_csv(file = csv_file, guess_max = 100000)
         filtered_data <- all_data %>% filter(!is.na(cosmic))
-
         filtered_data$sample <- aliquot
         filtered_data$gene <- NA
-
-        for (row in 1:nrow(filtered_data)) {
-            cosmic <- filtered_data$cosmic[row]
-            matching_indices <- which(info(vcf_data)$LEGACY_ID == cosmic)
-            if (length(matching_indices) == 0) next
-            matching_info <- info(vcf_data)[matching_indices, , drop = FALSE]
-            matching_row_data <- rowRanges(vcf_data)[matching_indices, ]
-            gene_id <- paste(unique(matching_info$GENE), collapse = ",")
-            if (gene_id != "NA") filtered_data$gene[row] <- gene_id
-            # print(as.data.frame(filtered_data[1:row, ]))
-        }
+        filtered_data$gene <- cosmic_df$GENE[match(filtered_data$cosmic, cosmic_df$LEGACY_ID)]
         output_file <- file.path(wd, paste0("vignettes/", cancer_type, "_", aliquot, ".csv"))
         write_csv(filtered_data, output_file)
         all_aliquots <- rbind(all_aliquots, filtered_data)
     }
 }
-output_file <- file.path(wd, paste0("vignettes/", cancer_type, ".csv"))
+output_file <- file.path(wd, paste0("vignettes/", cancer_type, "_mutations.csv"))
 write_csv(all_aliquots, output_file)
