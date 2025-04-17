@@ -1,0 +1,10 @@
+chromosome,start,end,width,type,1000genomes_AF,1000genomes_ID,Callers,NumCallers,cosmic,dbsnp,repeat_masker,dbsnp_somatic,VAF,n_vaf,t_alt_count,t_ref_count,n_alt_count,n_ref_count,model_score,Variant_Classification,signature_R1,signature_R2,signature_N3,snv_near_indel,total_cn,major_cn,minor_cn,karyotype,sample,gene
+16,60008689,60008689,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSN5835676,NA,AluY,FALSE,0.3485,NA,23,43,NA,NA,NA,lincRNA,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,b4860b5f-0a80-4fb2-81e1-4bafeb525b1c,NA
+2,12698615,12698615,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSN4795866,NA,MLT1F,FALSE,0.1944,NA,14,58,NA,NA,NA,lincRNA,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,b4860b5f-0a80-4fb2-81e1-4bafeb525b1c,NA
+2,181888391,181888391,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSN9868009,NA,NA,FALSE,0.3506,NA,27,50,NA,NA,NA,Intron,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,b4860b5f-0a80-4fb2-81e1-4bafeb525b1c,NA
+20,62421115,62421115,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSN7102406,NA,NA,FALSE,0.4219,NA,27,37,NA,NA,NA,Intron,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,b4860b5f-0a80-4fb2-81e1-4bafeb525b1c,NA
+6,66453170,66453170,1,snv_mnv,NA,NA,"broad,dkfz,muse",3,COSN7892384,NA,NA,FALSE,0.0714,NA,6,78,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,b4860b5f-0a80-4fb2-81e1-4bafeb525b1c,NA
+7,27382960,27382960,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSN7976408,NA,AluSz,FALSE,0.4655,NA,27,31,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,b4860b5f-0a80-4fb2-81e1-4bafeb525b1c,NA
+7,62615491,62615491,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSN5661055,NA,NA,FALSE,0.4459,NA,33,41,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,b4860b5f-0a80-4fb2-81e1-4bafeb525b1c,SEPT14P1
+8,116670946,116670946,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSN17840051,NA,NA,FALSE,0.4688,NA,45,51,NA,NA,NA,Intron,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,b4860b5f-0a80-4fb2-81e1-4bafeb525b1c,NA
+9,32245319,32245319,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSN19264260,NA,NA,FALSE,0.5079,NA,32,31,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,b4860b5f-0a80-4fb2-81e1-4bafeb525b1c,NA

@@ -1,0 +1,8 @@
+chromosome,start,end,width,type,1000genomes_AF,1000genomes_ID,Callers,NumCallers,cosmic,dbsnp,repeat_masker,dbsnp_somatic,VAF,n_vaf,t_alt_count,t_ref_count,n_alt_count,n_ref_count,model_score,Variant_Classification,signature_R1,signature_R2,signature_N3,snv_near_indel,total_cn,major_cn,minor_cn,karyotype,sample,gene
+1,99547685,99547685,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSN16704885,NA,NA,FALSE,0.5455,NA,24,20,NA,NA,NA,RNA,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,4d121008-0987-4142-a2b8-7dac58f3110a,NA
+10,7214537,7214537,1,snv_mnv,NA,NA,"dkfz,muse,sanger",3,COSM215433,rs780440731,NA,FALSE,0.1667,NA,2,10,NA,NA,NA,Missense_Mutation,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,4d121008-0987-4142-a2b8-7dac58f3110a,NA
+12,80735794,80735794,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSM215554,NA,NA,FALSE,0.3878,NA,19,30,NA,NA,NA,Missense_Mutation,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,4d121008-0987-4142-a2b8-7dac58f3110a,RN7SKP261
+14,48789193,48789193,1,snv_mnv,NA,NA,"broad,muse",2,COSN7235169,NA,MLT2B4,FALSE,0.1,NA,3,27,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,4d121008-0987-4142-a2b8-7dac58f3110a,AL358335.3
+15,38805096,38805096,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSM215604,NA,NA,FALSE,0.5526,NA,21,17,NA,NA,NA,Missense_Mutation,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,4d121008-0987-4142-a2b8-7dac58f3110a,RASGRP1
+17,74395995,74395995,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSM215716,rs199618431,NA,FALSE,0.5,NA,10,10,NA,NA,NA,Missense_Mutation,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,4d121008-0987-4142-a2b8-7dac58f3110a,UBE2O
+6,69235617,69235617,1,snv_mnv,NA,NA,"broad,muse",2,COSN4928805,rs201598592,L1PB1,FALSE,0.0789,NA,3,35,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,4d121008-0987-4142-a2b8-7dac58f3110a,NA

@@ -1,0 +1,13 @@
+chromosome,start,end,width,type,1000genomes_AF,1000genomes_ID,Callers,NumCallers,cosmic,dbsnp,repeat_masker,dbsnp_somatic,VAF,n_vaf,t_alt_count,t_ref_count,n_alt_count,n_ref_count,model_score,Variant_Classification,signature_R1,signature_R2,signature_N3,snv_near_indel,total_cn,major_cn,minor_cn,karyotype,sample,gene
+16,4242731,4242731,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSM3670199,NA,NA,FALSE,0.3043,NA,7,16,NA,NA,NA,Missense_Mutation,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,e63fac5a-cc48-4ab4-b69d-3f0be6ad684d,NA
+16,27374867,27374867,1,snv_mnv,NA,NA,"broad,dkfz,muse",3,COSM3670190,NA,NA,FALSE,0.1333,NA,4,26,NA,NA,NA,Missense_Mutation,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,e63fac5a-cc48-4ab4-b69d-3f0be6ad684d,IL4R
+16,63542729,63542729,1,snv_mnv,NA,NA,"broad,muse",2,COSN19339635,rs371241176,L1MA10,FALSE,0.4615,NA,6,7,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,e63fac5a-cc48-4ab4-b69d-3f0be6ad684d,NA
+2,152390744,152390744,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSM3670296,rs774372075,NA,FALSE,0.5385,NA,14,12,NA,NA,NA,Silent,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,e63fac5a-cc48-4ab4-b69d-3f0be6ad684d,NA
+4,112737250,112737250,1,snv_mnv,3.9936e-4,rs535737314,"broad,dkfz,muse,sanger",4,COSN16899346,rs535737314,NA,FALSE,0.1429,NA,8,48,NA,NA,NA,lincRNA,FALSE,FALSE,FALSE,FALSE,3,2,1,2_1,e63fac5a-cc48-4ab4-b69d-3f0be6ad684d,NA
+5,94200463,94200463,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSN7779504,NA,NA,FALSE,0.1707,NA,7,34,NA,NA,NA,Intron,FALSE,FALSE,FALSE,FALSE,3,2,1,2_1,e63fac5a-cc48-4ab4-b69d-3f0be6ad684d,MCTP1
+6,70034878,70034878,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSM3670361,NA,NA,FALSE,0.3023,NA,13,30,NA,NA,NA,Missense_Mutation,FALSE,FALSE,FALSE,FALSE,3,2,1,2_1,e63fac5a-cc48-4ab4-b69d-3f0be6ad684d,ADGRB3
+7,47026967,47026967,1,snv_mnv,NA,NA,"broad,muse",2,COSN19456103,NA,MLT1E1-int,FALSE,0.0811,NA,3,34,NA,NA,NA,RNA,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,e63fac5a-cc48-4ab4-b69d-3f0be6ad684d,AC004870.2
+8,25209343,25209343,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSM3670389,rs752149819,NA,FALSE,0.3043,NA,14,32,NA,NA,NA,Splice_Site,FALSE,FALSE,FALSE,FALSE,3,2,1,2_1,e63fac5a-cc48-4ab4-b69d-3f0be6ad684d,NA
+8,38274849,38274849,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSM19176,NA,NA,FALSE,0.5882,NA,20,14,NA,NA,NA,Missense_Mutation,FALSE,FALSE,FALSE,FALSE,3,2,1,2_1,e63fac5a-cc48-4ab4-b69d-3f0be6ad684d,NA
+8,121950782,121950782,1,snv_mnv,NA,NA,"broad,muse",2,COSN8062620,NA,AluYb8,FALSE,0.1923,NA,5,21,NA,NA,NA,lincRNA,FALSE,FALSE,FALSE,FALSE,3,2,1,2_1,e63fac5a-cc48-4ab4-b69d-3f0be6ad684d,NA
+9,104171308,104171308,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSM3670400,NA,NA,FALSE,0.25,NA,5,15,NA,NA,NA,Missense_Mutation,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,e63fac5a-cc48-4ab4-b69d-3f0be6ad684d,NA

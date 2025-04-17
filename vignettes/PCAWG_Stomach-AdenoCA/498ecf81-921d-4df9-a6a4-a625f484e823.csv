@@ -1,0 +1,4 @@
+chromosome,start,end,width,type,1000genomes_AF,1000genomes_ID,Callers,NumCallers,cosmic,dbsnp,repeat_masker,dbsnp_somatic,VAF,n_vaf,t_alt_count,t_ref_count,n_alt_count,n_ref_count,model_score,Variant_Classification,signature_R1,signature_R2,signature_N3,snv_near_indel,total_cn,major_cn,minor_cn,karyotype,sample,gene
+1,202114067,202114067,1,snv_mnv,NA,NA,"broad,muse",2,COSN17998272,rs541882868,NA,FALSE,0.4545,NA,5,6,NA,NA,NA,5'Flank,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,498ecf81-921d-4df9-a6a4-a625f484e823,"PTPN7,ARL8A"
+2,609185,609185,1,snv_mnv,NA,NA,"broad,muse",2,COSN19485090,NA,NA,FALSE,0.0333,NA,1,29,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,498ecf81-921d-4df9-a6a4-a625f484e823,NA
+4,184879107,184879107,1,snv_mnv,NA,NA,"broad,muse",2,COSN17977703,NA,L1MC4,FALSE,0.2308,NA,6,20,NA,NA,NA,Intron,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,498ecf81-921d-4df9-a6a4-a625f484e823,NA

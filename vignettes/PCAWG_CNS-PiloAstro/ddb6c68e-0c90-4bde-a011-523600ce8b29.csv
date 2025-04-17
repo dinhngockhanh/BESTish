@@ -1,0 +1,4 @@
+chromosome,start,end,width,type,1000genomes_AF,1000genomes_ID,Callers,NumCallers,cosmic,dbsnp,repeat_masker,dbsnp_somatic,VAF,n_vaf,t_alt_count,t_ref_count,n_alt_count,n_ref_count,model_score,Variant_Classification,signature_R1,signature_R2,signature_N3,snv_near_indel,total_cn,major_cn,minor_cn,karyotype,sample,gene
+6,133137658,133137658,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSM3670352,NA,NA,FALSE,0.2174,NA,5,18,NA,NA,NA,Silent,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,ddb6c68e-0c90-4bde-a011-523600ce8b29,"SNORD101,SNORD100,SNORA33"
+X,336550,336550,1,snv_mnv,0.1787,NA,"dkfz,muse",2,COSN17480025,rs118150039,NA,FALSE,0.1515,NA,5,28,NA,NA,NA,Intron,FALSE,FALSE,FALSE,TRUE,2,1,1,1_1,ddb6c68e-0c90-4bde-a011-523600ce8b29,PPP2R3B
+X,336551,336551,1,snv_mnv,0.1787,NA,"dkfz,muse",2,COSN17479830,rs78416726,NA,FALSE,0.1613,NA,5,26,NA,NA,NA,Intron,FALSE,FALSE,FALSE,TRUE,2,1,1,1_1,ddb6c68e-0c90-4bde-a011-523600ce8b29,PPP2R3B

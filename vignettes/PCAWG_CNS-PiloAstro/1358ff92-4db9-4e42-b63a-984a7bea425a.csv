@@ -1,0 +1,4 @@
+chromosome,start,end,width,type,1000genomes_AF,1000genomes_ID,Callers,NumCallers,cosmic,dbsnp,repeat_masker,dbsnp_somatic,VAF,n_vaf,t_alt_count,t_ref_count,n_alt_count,n_ref_count,model_score,Variant_Classification,signature_R1,signature_R2,signature_N3,snv_near_indel,total_cn,major_cn,minor_cn,karyotype,sample,gene
+11,57252686,57252686,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSM3670106,NA,NA,FALSE,0.3333,NA,9,18,NA,NA,NA,Silent,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,1358ff92-4db9-4e42-b63a-984a7bea425a,SLC43A1
+2,225119575,225119575,1,snv_mnv,NA,NA,"broad,muse",2,COSN15680973,NA,NA,FALSE,0.0857,NA,3,32,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,1358ff92-4db9-4e42-b63a-984a7bea425a,NA
+3,85494271,85494271,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSN4821942,NA,MIRb,FALSE,0.2381,NA,10,32,NA,NA,NA,Intron,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,1358ff92-4db9-4e42-b63a-984a7bea425a,NA

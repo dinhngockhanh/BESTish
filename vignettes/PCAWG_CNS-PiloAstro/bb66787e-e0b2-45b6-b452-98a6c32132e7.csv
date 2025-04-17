@@ -1,0 +1,4 @@
+chromosome,start,end,width,type,1000genomes_AF,1000genomes_ID,Callers,NumCallers,cosmic,dbsnp,repeat_masker,dbsnp_somatic,VAF,n_vaf,t_alt_count,t_ref_count,n_alt_count,n_ref_count,model_score,Variant_Classification,signature_R1,signature_R2,signature_N3,snv_near_indel,total_cn,major_cn,minor_cn,karyotype,sample,gene
+5,144490847,144490847,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSN16587724,NA,NA,FALSE,0.3714,NA,13,22,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,bb66787e-e0b2-45b6-b452-98a6c32132e7,NA
+8,80399074,80399074,1,snv_mnv,1.9968e-4,rs566542752,"broad,muse",2,COSN19532755,rs566542752,NA,FALSE,0.1429,NA,4,24,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,bb66787e-e0b2-45b6-b452-98a6c32132e7,NA
+X,42147468,42147468,1,snv_mnv,0.0593,rs5964120,"dkfz,muse",2,COSN8191032,rs5964120,L1MEf,FALSE,0.2778,NA,10,26,NA,NA,NA,lincRNA,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,bb66787e-e0b2-45b6-b452-98a6c32132e7,AL023875.1

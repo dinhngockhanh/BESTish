@@ -1,0 +1,5 @@
+chromosome,start,end,width,type,1000genomes_AF,1000genomes_ID,Callers,NumCallers,cosmic,dbsnp,repeat_masker,dbsnp_somatic,VAF,n_vaf,t_alt_count,t_ref_count,n_alt_count,n_ref_count,model_score,Variant_Classification,signature_R1,signature_R2,signature_N3,snv_near_indel,total_cn,major_cn,minor_cn,karyotype,sample,gene
+11,23702824,23702828,5,indel,NA,NA,"dkfz,sanger,smufin",3,COSN19475715,rs760061924,(CAAA)n,FALSE,0.2895,NA,11,27,NA,NA,0.789,IGR,NA,NA,NA,NA,2,1,1,1_1,ea83f4e6-d2fa-481e-9e2f-e0489f3cbc93,NA
+11,81754815,81754815,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSN8874422,NA,LTR86A1,FALSE,0.3714,NA,13,22,NA,NA,NA,lincRNA,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,ea83f4e6-d2fa-481e-9e2f-e0489f3cbc93,NA
+17,48626791,48626791,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSM3670208,rs758861362,NA,FALSE,0.4815,NA,13,14,NA,NA,NA,Missense_Mutation,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,ea83f4e6-d2fa-481e-9e2f-e0489f3cbc93,SPATA20
+X,109736290,109736290,1,snv_mnv,NA,NA,"dkfz,muse",2,COSN7681518,rs4338286,(TTTC)n,FALSE,0.24,NA,6,19,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,ea83f4e6-d2fa-481e-9e2f-e0489f3cbc93,NA

@@ -1,0 +1,6 @@
+chromosome,start,end,width,type,1000genomes_AF,1000genomes_ID,Callers,NumCallers,cosmic,dbsnp,repeat_masker,dbsnp_somatic,VAF,n_vaf,t_alt_count,t_ref_count,n_alt_count,n_ref_count,model_score,Variant_Classification,signature_R1,signature_R2,signature_N3,snv_near_indel,total_cn,major_cn,minor_cn,karyotype,sample,gene
+10,109945611,109945611,1,snv_mnv,NA,NA,"broad,muse",2,COSN16183694,NA,L2,FALSE,0.0968,NA,3,28,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,86cbb7ad-b22b-414f-a122-77d38c77207d,NA
+19,11333686,11333686,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSM3670220,rs200261463,NA,FALSE,0.36,NA,9,16,NA,NA,NA,Silent,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,86cbb7ad-b22b-414f-a122-77d38c77207d,"DOCK6,AC011472.4"
+2,159715399,159715399,1,snv_mnv,NA,NA,"broad,muse,sanger",3,COSN17232427,NA,L1MB3,FALSE,0.2593,NA,7,20,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,86cbb7ad-b22b-414f-a122-77d38c77207d,"OR7E89P,OR7E28P"
+2,163789326,163789326,1,snv_mnv,NA,NA,"broad,muse",2,COSN19167330,NA,NA,FALSE,0.0714,NA,3,39,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,86cbb7ad-b22b-414f-a122-77d38c77207d,NA
+8,53764340,53764340,1,snv_mnv,NA,NA,"broad,muse",2,COSN16345321,rs759661079,L1PA7,FALSE,0.1034,NA,3,26,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,86cbb7ad-b22b-414f-a122-77d38c77207d,NA

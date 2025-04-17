@@ -1,0 +1,7 @@
+chromosome,start,end,width,type,1000genomes_AF,1000genomes_ID,Callers,NumCallers,cosmic,dbsnp,repeat_masker,dbsnp_somatic,VAF,n_vaf,t_alt_count,t_ref_count,n_alt_count,n_ref_count,model_score,Variant_Classification,signature_R1,signature_R2,signature_N3,snv_near_indel,total_cn,major_cn,minor_cn,karyotype,sample,gene
+1,238167056,238167056,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSN8450111,rs867680522,L1PA7,FALSE,0.3958,NA,19,29,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,324adcfa-3fba-45b9-99f0-9d41c0c54d79,NA
+10,103870450,103870450,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSM4697646,NA,NA,FALSE,1,NA,11,NA,NA,NA,NA,Missense_Mutation,FALSE,FALSE,FALSE,FALSE,1,1,0,1_0,324adcfa-3fba-45b9-99f0-9d41c0c54d79,NA
+17,77206127,77206127,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSN9323697,NA,NA,FALSE,0.6364,NA,14,8,NA,NA,NA,Intron,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,324adcfa-3fba-45b9-99f0-9d41c0c54d79,RBFOX3
+19,40430416,40430416,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSM306985,rs373250681,NA,FALSE,0.5,NA,7,7,NA,NA,NA,Silent,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,324adcfa-3fba-45b9-99f0-9d41c0c54d79,NA
+3,153303117,153303117,1,snv_mnv,5.9904e-4,rs574942263,"broad,dkfz,muse,sanger",4,COSN19260613,rs574942263,L1PA4,FALSE,0.4516,NA,14,17,NA,NA,NA,RNA,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,324adcfa-3fba-45b9-99f0-9d41c0c54d79,NA
+6,152268174,152268174,1,snv_mnv,NA,NA,"broad,muse,sanger",3,COSN7694617,NA,AluSx,FALSE,0.3333,NA,8,16,NA,NA,NA,Intron,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,324adcfa-3fba-45b9-99f0-9d41c0c54d79,NA

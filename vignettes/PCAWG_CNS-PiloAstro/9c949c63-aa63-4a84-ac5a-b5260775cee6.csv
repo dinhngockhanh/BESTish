@@ -1,0 +1,8 @@
+chromosome,start,end,width,type,1000genomes_AF,1000genomes_ID,Callers,NumCallers,cosmic,dbsnp,repeat_masker,dbsnp_somatic,VAF,n_vaf,t_alt_count,t_ref_count,n_alt_count,n_ref_count,model_score,Variant_Classification,signature_R1,signature_R2,signature_N3,snv_near_indel,total_cn,major_cn,minor_cn,karyotype,sample,gene
+1,181598202,181598202,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSN14526410,NA,NA,FALSE,0.2308,NA,9,30,NA,NA,NA,Intron,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,9c949c63-aa63-4a84-ac5a-b5260775cee6,NA
+11,72425262,72425262,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSM3670110,NA,NA,FALSE,0.4516,NA,14,17,NA,NA,NA,Missense_Mutation,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,9c949c63-aa63-4a84-ac5a-b5260775cee6,ARAP1
+12,63359310,63359310,1,snv_mnv,NA,NA,"broad,sanger",2,COSM942388,rs766306776,NA,FALSE,NA,NA,NA,NA,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,9c949c63-aa63-4a84-ac5a-b5260775cee6,NA
+21,26405034,26405034,1,snv_mnv,NA,NA,"broad,muse",2,COSN7141555,NA,NA,FALSE,0.0889,NA,4,41,NA,NA,NA,lincRNA,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,9c949c63-aa63-4a84-ac5a-b5260775cee6,AP001342.1
+4,182687202,182687202,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSN7633567,NA,NA,FALSE,0.1429,NA,5,30,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,9c949c63-aa63-4a84-ac5a-b5260775cee6,NA
+6,48354302,48354302,1,snv_mnv,NA,NA,"broad,muse,sanger",3,COSN7884839,NA,L1PBa,FALSE,0.1481,NA,4,23,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,9c949c63-aa63-4a84-ac5a-b5260775cee6,NA
+X,10898630,10898630,1,snv_mnv,NA,NA,"broad,muse",2,COSN9171224,NA,NA,FALSE,0.25,NA,9,27,NA,NA,NA,lincRNA,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,9c949c63-aa63-4a84-ac5a-b5260775cee6,NA

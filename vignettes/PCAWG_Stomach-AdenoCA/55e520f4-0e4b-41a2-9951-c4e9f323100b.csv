@@ -1,0 +1,1 @@
+chromosome,start,end,width,type,1000genomes_AF,1000genomes_ID,Callers,NumCallers,VAF,cosmic,dbsnp,repeat_masker,t_alt_count,t_ref_count,dbsnp_somatic,signature_R1,signature_R2,signature_N3,snv_near_indel,Variant_Classification,total_cn,major_cn,minor_cn,karyotype,sample,gene

@@ -20,7 +20,9 @@ files_in_dir <- list.files("data/PCAWG", full.names = TRUE)
 matching_files <- files_in_dir[grepl("_all\\.csv$", files_in_dir)]
 file_ids <- sub("_all\\.csv$", "", basename(matching_files))
 #---Prepare data for every ICGC cancer type
+dir.create("vignettes/PCAWG", recursive = TRUE, showWarnings = FALSE)
 for (cancer_type in unique(icgc_data$histology_abbreviation)) {
+    dir.create(paste0("vignettes/PCAWG_",cancer_type), recursive = TRUE, showWarnings = FALSE)
     cancer_type_data <- icgc_data %>%
         filter(
             histology_abbreviation == cancer_type,

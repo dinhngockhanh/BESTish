@@ -1,0 +1,5 @@
+chromosome,start,end,width,type,1000genomes_AF,1000genomes_ID,Callers,NumCallers,cosmic,dbsnp,repeat_masker,dbsnp_somatic,VAF,n_vaf,t_alt_count,t_ref_count,n_alt_count,n_ref_count,model_score,Variant_Classification,signature_R1,signature_R2,signature_N3,snv_near_indel,total_cn,major_cn,minor_cn,karyotype,sample,gene
+1,57610090,57610090,1,snv_mnv,NA,NA,"broad,muse,sanger",3,COSN17407188,NA,AluSg,FALSE,0.3803,NA,27,44,NA,NA,NA,Intron,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,56425c2e-6bbf-4b20-ba07-79a526dd4603,DAB1
+18,42662903,42662903,1,snv_mnv,5.9904e-4,rs142076423,"broad,muse",2,COSN7360301,rs142076423,NA,FALSE,0.046,NA,4,83,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,56425c2e-6bbf-4b20-ba07-79a526dd4603,NA
+21,19651033,19651033,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSN19558781,NA,AluY,FALSE,0.322,NA,19,40,NA,NA,NA,Intron,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,56425c2e-6bbf-4b20-ba07-79a526dd4603,NA
+X,14748728,14748728,1,snv_mnv,NA,NA,"dkfz,muse",2,COSN1387268,rs868337988,NA,FALSE,0.25,NA,6,18,NA,NA,NA,3'UTR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,56425c2e-6bbf-4b20-ba07-79a526dd4603,GLRA2

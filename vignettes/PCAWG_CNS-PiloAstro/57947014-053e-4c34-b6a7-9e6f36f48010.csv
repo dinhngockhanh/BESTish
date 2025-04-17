@@ -1,0 +1,5 @@
+chromosome,start,end,width,type,1000genomes_AF,1000genomes_ID,Callers,NumCallers,cosmic,dbsnp,repeat_masker,dbsnp_somatic,VAF,n_vaf,t_alt_count,t_ref_count,n_alt_count,n_ref_count,model_score,Variant_Classification,signature_R1,signature_R2,signature_N3,snv_near_indel,total_cn,major_cn,minor_cn,karyotype,sample,gene
+11,9009775,9009775,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSM3670108,rs149080270,NA,FALSE,0.1569,NA,8,43,NA,NA,NA,Nonsense_Mutation,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,57947014-053e-4c34-b6a7-9e6f36f48010,NRIP3
+5,121126737,121126737,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSN2065560,NA,NA,FALSE,0.3158,NA,12,26,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,57947014-053e-4c34-b6a7-9e6f36f48010,NA
+8,118203773,118203773,1,snv_mnv,1.9968e-4,rs572772944,"broad,dkfz,muse,sanger",4,COSN5812953,rs572772944,L1PA3,FALSE,0.1017,NA,6,53,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,57947014-053e-4c34-b6a7-9e6f36f48010,NA
+X,109736286,109736286,1,snv_mnv,NA,NA,"dkfz,muse",2,COSN18847177,rs370602689,(TTTC)n,FALSE,0.4286,NA,6,8,NA,NA,NA,IGR,FALSE,FALSE,FALSE,TRUE,1,1,0,1_0,57947014-053e-4c34-b6a7-9e6f36f48010,NA

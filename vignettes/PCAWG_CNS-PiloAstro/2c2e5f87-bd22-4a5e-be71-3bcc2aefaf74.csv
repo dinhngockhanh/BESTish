@@ -1,0 +1,5 @@
+chromosome,start,end,width,type,1000genomes_AF,1000genomes_ID,Callers,NumCallers,cosmic,dbsnp,repeat_masker,dbsnp_somatic,VAF,n_vaf,t_alt_count,t_ref_count,n_alt_count,n_ref_count,model_score,Variant_Classification,signature_R1,signature_R2,signature_N3,snv_near_indel,total_cn,major_cn,minor_cn,karyotype,sample,gene
+1,43204163,43204163,1,snv_mnv,NA,NA,"broad,muse",2,COSM3670160,rs766957259,NA,FALSE,0.1562,NA,5,27,NA,NA,NA,Missense_Mutation,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,2c2e5f87-bd22-4a5e-be71-3bcc2aefaf74,NA
+6,56392396,56392396,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSM3670358,rs769643988,NA,FALSE,0.3,NA,15,35,NA,NA,NA,Silent,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,2c2e5f87-bd22-4a5e-be71-3bcc2aefaf74,NA
+9,27878517,27878517,1,snv_mnv,5.9904e-4,rs143187103,"broad,dkfz,muse,sanger",4,COSN9708435,rs143187103,NA,FALSE,0.1842,NA,7,31,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,2c2e5f87-bd22-4a5e-be71-3bcc2aefaf74,NA
+X,152807210,152807210,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSM457020,rs782486359,NA,FALSE,0.2286,NA,8,27,NA,NA,NA,Missense_Mutation,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,2c2e5f87-bd22-4a5e-be71-3bcc2aefaf74,NA

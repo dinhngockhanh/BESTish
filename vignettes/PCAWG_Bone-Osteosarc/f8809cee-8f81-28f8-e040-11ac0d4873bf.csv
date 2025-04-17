@@ -1,0 +1,5 @@
+chromosome,start,end,width,type,1000genomes_AF,1000genomes_ID,Callers,NumCallers,cosmic,dbsnp,repeat_masker,dbsnp_somatic,VAF,n_vaf,t_alt_count,t_ref_count,n_alt_count,n_ref_count,model_score,Variant_Classification,signature_R1,signature_R2,signature_N3,snv_near_indel,total_cn,major_cn,minor_cn,karyotype,sample,gene
+2,17029854,17029854,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSN9866308,NA,HERVL40-int,FALSE,0.3,NA,15,35,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,f8809cee-8f81-28f8-e040-11ac0d4873bf,NA
+2,58797094,58797094,1,snv_mnv,NA,NA,"broad,dkfz",2,COSN17934373,NA,NA,FALSE,0.2,NA,11,44,NA,NA,NA,lincRNA,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,f8809cee-8f81-28f8-e040-11ac0d4873bf,NA
+2,186985118,186985118,1,snv_mnv,NA,NA,"broad,muse,sanger",3,COSN6158865,NA,L1ME1,FALSE,0.1176,NA,6,45,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,f8809cee-8f81-28f8-e040-11ac0d4873bf,NA
+8,138450083,138450083,1,snv_mnv,1.9968e-4,rs567417461,"broad,dkfz,muse,sanger",4,COSN15842229,rs567417461,L2c,FALSE,0.4237,NA,25,34,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,f8809cee-8f81-28f8-e040-11ac0d4873bf,NA

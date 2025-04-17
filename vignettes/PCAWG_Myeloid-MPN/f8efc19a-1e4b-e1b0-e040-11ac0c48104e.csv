@@ -1,0 +1,4 @@
+chromosome,start,end,width,type,1000genomes_AF,1000genomes_ID,Callers,NumCallers,cosmic,dbsnp,repeat_masker,dbsnp_somatic,VAF,n_vaf,t_alt_count,t_ref_count,n_alt_count,n_ref_count,model_score,Variant_Classification,signature_R1,signature_R2,signature_N3,snv_near_indel,total_cn,major_cn,minor_cn,karyotype,sample,gene
+9,5070021,5070027,7,indel,NA,NA,"broad,dkfz,sanger,smufin",4,COSM24437,NA,NA,FALSE,0.2653,NA,13,36,NA,NA,0.995,In_Frame_Del,NA,NA,NA,NA,2,1,1,1_1,f8efc19a-1e4b-e1b0-e040-11ac0c48104e,NA
+10,42972813,42972813,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSN6970476,NA,NA,FALSE,0.2979,NA,14,33,NA,NA,NA,lincRNA,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,f8efc19a-1e4b-e1b0-e040-11ac0c48104e,CCNYL2
+9,29665782,29665782,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSN9709260,NA,L1PA17,FALSE,0.1154,NA,6,46,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,f8efc19a-1e4b-e1b0-e040-11ac0c48104e,NA

@@ -1,0 +1,5 @@
+chromosome,start,end,width,type,1000genomes_AF,1000genomes_ID,Callers,NumCallers,cosmic,dbsnp,repeat_masker,dbsnp_somatic,VAF,n_vaf,t_alt_count,t_ref_count,n_alt_count,n_ref_count,model_score,Variant_Classification,signature_R1,signature_R2,signature_N3,snv_near_indel,total_cn,major_cn,minor_cn,karyotype,sample,gene
+1,233489645,233489645,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSM3670150,NA,NA,FALSE,0.1333,NA,6,39,NA,NA,NA,Missense_Mutation,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,a7fb0931-28df-46f4-bc0f-2011fc91f0e1,NA
+3,46414784,46414784,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSM3670328,rs34418657,NA,FALSE,0.375,NA,15,25,NA,NA,NA,Missense_Mutation,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,a7fb0931-28df-46f4-bc0f-2011fc91f0e1,NA
+3,54763055,54763055,1,snv_mnv,3.9936e-4,rs188877847,"broad,dkfz,muse",3,COSN7701213,rs188877847,NA,FALSE,0.3158,NA,12,26,NA,NA,NA,Intron,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,a7fb0931-28df-46f4-bc0f-2011fc91f0e1,NA
+7,45931561,45931561,1,snv_mnv,1.9968e-4,rs146202574,"broad,dkfz,muse,sanger",4,COSM3765352,rs146202574,NA,FALSE,0.283,NA,15,38,NA,NA,NA,Missense_Mutation,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,a7fb0931-28df-46f4-bc0f-2011fc91f0e1,NA

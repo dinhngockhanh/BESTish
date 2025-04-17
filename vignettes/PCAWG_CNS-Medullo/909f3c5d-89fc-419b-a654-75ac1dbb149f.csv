@@ -1,0 +1,5 @@
+chromosome,start,end,width,type,1000genomes_AF,1000genomes_ID,Callers,NumCallers,cosmic,dbsnp,repeat_masker,dbsnp_somatic,VAF,n_vaf,t_alt_count,t_ref_count,n_alt_count,n_ref_count,model_score,Variant_Classification,signature_R1,signature_R2,signature_N3,snv_near_indel,total_cn,major_cn,minor_cn,karyotype,sample,gene
+1,179608715,179608715,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSN9367432,NA,NA,FALSE,0.5091,NA,28,27,NA,NA,NA,Intron,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,909f3c5d-89fc-419b-a654-75ac1dbb149f,TDRD5
+13,113121198,113121198,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSN19575105,NA,NA,FALSE,0.3667,NA,11,19,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,909f3c5d-89fc-419b-a654-75ac1dbb149f,NA
+5,105316996,105316996,1,snv_mnv,3.9936e-4,rs535032058,"broad,dkfz,muse,sanger",4,COSN6582757,rs535032058,NA,FALSE,0.1458,NA,7,41,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,909f3c5d-89fc-419b-a654-75ac1dbb149f,NA
+X,120697099,120697099,1,snv_mnv,NA,NA,"broad,muse",2,COSN15920042,NA,(TG)n,FALSE,0.25,NA,3,9,NA,NA,NA,IGR,FALSE,FALSE,FALSE,TRUE,1,1,0,1_0,909f3c5d-89fc-419b-a654-75ac1dbb149f,NA

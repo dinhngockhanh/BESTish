@@ -1,0 +1,9 @@
+chromosome,start,end,width,type,1000genomes_AF,1000genomes_ID,Callers,NumCallers,cosmic,dbsnp,repeat_masker,dbsnp_somatic,VAF,n_vaf,t_alt_count,t_ref_count,n_alt_count,n_ref_count,model_score,Variant_Classification,signature_R1,signature_R2,signature_N3,snv_near_indel,total_cn,major_cn,minor_cn,karyotype,sample,gene
+15,101464934,101464934,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSM3670177,NA,NA,FALSE,0.2857,NA,8,20,NA,NA,NA,Splice_Site,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,c8f61136-0bea-4fb4-bb63-699af7f22146,NA
+17,1580426,1580426,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSM3670206,rs763955274,NA,FALSE,0.3636,NA,12,21,NA,NA,NA,Silent,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,c8f61136-0bea-4fb4-bb63-699af7f22146,PRPF8
+2,239050008,239050008,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSM3670262,rs763713263,NA,FALSE,0.3333,NA,7,14,NA,NA,NA,Missense_Mutation,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,c8f61136-0bea-4fb4-bb63-699af7f22146,NA
+5,27174813,27174813,1,snv_mnv,NA,NA,"broad,muse",2,COSN16858854,NA,AluSc,FALSE,0.1304,NA,3,20,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,c8f61136-0bea-4fb4-bb63-699af7f22146,NA
+6,55903658,55903658,1,snv_mnv,NA,NA,"broad,muse",2,COSN19565349,rs528736054,MSTA,FALSE,0.1176,NA,4,30,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,c8f61136-0bea-4fb4-bb63-699af7f22146,NA
+6,63731904,63731904,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSN7890709,NA,Tigger2,FALSE,0.25,NA,8,24,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,c8f61136-0bea-4fb4-bb63-699af7f22146,NA
+6,64983979,64983979,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSN9801806,NA,NA,FALSE,0.1935,NA,6,25,NA,NA,NA,Intron,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,c8f61136-0bea-4fb4-bb63-699af7f22146,NA
+7,138546037,138546037,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSM3670363,NA,NA,FALSE,0.25,NA,5,15,NA,NA,NA,Missense_Mutation,FALSE,FALSE,FALSE,FALSE,3,2,1,2_1,c8f61136-0bea-4fb4-bb63-699af7f22146,NA
