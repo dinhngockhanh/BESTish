@@ -1,14 +1,15 @@
-CANCER_TISSUE <- "Liver-HCC"  
-WGD_STATUS    <- FALSE       
-setwd("/Users/keitotaketomi/Downloads/abc-smc-rf 2/R")
+setwd("/Users/dinhngockhanh/My Drive (knd2127@columbia.edu)/RESEARCH AND EVERYTHING/Projects/GITHUB/abcsmcrf/R")
+# setwd("/Users/keitotaketomi/Downloads/abc-smc-rf 2/R")
 files_sources <- list.files(pattern = "\\.[rR]$")
 sapply(files_sources, source)
 
-setwd("/Users/keitotaketomi/Documents/DriverSelectionSweep 2/R")
+setwd("/Users/dinhngockhanh/My Drive (knd2127@columbia.edu)/RESEARCH AND EVERYTHING/Projects/GITHUB/DriverSelectionSweep/R")
+# setwd("/Users/keitotaketomi/Documents/DriverSelectionSweep 2/R")
 files_sources <- list.files(pattern = "\\.[rR]$")
 sapply(files_sources, source)
 
-setwd("/Users/keitotaketomi/Documents/DriverSelectionSweep 2/vignettes")
+setwd("/Users/dinhngockhanh/My Drive (knd2127@columbia.edu)/RESEARCH AND EVERYTHING/Projects/GITHUB/DriverSelectionSweep/vignettes")
+# setwd("/Users/keitotaketomi/Documents/DriverSelectionSweep 2/vignettes")
 
 
 
@@ -16,86 +17,176 @@ setwd("/Users/keitotaketomi/Documents/DriverSelectionSweep 2/vignettes")
 # 2) LOAD THE REAL PATIENT TIMING TABLE
 ###############################################################################
 real_df <- read.delim(
-  "/Users/keitotaketomi/Documents/2018-07-24-wgdMrcaTiming.csv",
-  stringsAsFactors = FALSE, header = TRUE
+    "/Users/dinhngockhanh/My Drive (knd2127@columbia.edu)/RESEARCH AND EVERYTHING/Projects/DATASETS/PCAWG/evolution_and_heterogeneity/2018-07-24-wgdMrcaTiming.txt",
+    #   "/Users/keitotaketomi/Documents/2018-07-24-wgdMrcaTiming.csv",
+    stringsAsFactors = FALSE, header = TRUE
 )
+
+CANCER_TISSUE <- "Liver-HCC"
+WGD_STATUS <- FALSE
 
 # pick the right MRCA column + rename 'age' → 'diag_age'
 if (!WGD_STATUS) {
-  real_sub <- real_df %>%
-    filter(tissue == CANCER_TISSUE, WGD == FALSE) %>%
-    rename(
-      MRCA_age = MRCA.time.linear,
-      diag_age = age
-    )
+    real_sub <- real_df %>%
+        filter(tissue == CANCER_TISSUE, WGD == FALSE) %>%
+        rename(
+            MRCA_age = MRCA.time.linear,
+            diag_age = age
+        ) %>%
+        filter(!is.na(MRCA_age), !is.na(diag_age))
+    real_sub$t <- real_sub$MRCA_age
 } else {
-  real_sub <- real_df %>%
-    filter(tissue == CANCER_TISSUE, WGD == TRUE) %>%
-    rename(
-      MRCA_age = MRCA.time.branching,
-      diag_age = age
-    )
+    real_sub <- real_df %>%
+        filter(tissue == CANCER_TISSUE, WGD == TRUE) %>%
+        rename(
+            MRCA_age = MRCA.time.linear,
+            diag_age = age
+        )
 }
 
-# drop any rows with NA in MRCA or diag
-real_sub <- real_sub %>% filter(!is.na(MRCA_age), !is.na(diag_age))
+histogram_x <- 0:(ceiling(max(real_sub$t)))
+histogram_y <- hist(real_sub$t, breaks = histogram_x, plot = FALSE)$counts
+histogram_y <- c(histogram_y / sum(histogram_y), 0)
 
-# compute the interval t = diag_age – MRCA_age
-real_sub$t <- real_sub$diag_age - real_sub$MRCA_age
+statistics_target <- data.frame(matrix(histogram_y, nrow = 1))
+colnames(statistics_target) <- c(paste0("Age_group_", histogram_x[2:length(histogram_x)]), "Age_group_NA")
+
+model <- function(parameters, parallel = TRUE) {
+    one_parameter <- function(parameter) {
+        lambda <- as.numeric(parameter$lambda)
+        #---Model parameters
+        r_initial <- c(10000, 1)
+        lambda_vec <- c(1, lambda)
+        u_vec <- c(0, 0)
+        alpha <- 1
+        max_time <- histogram_x[length(histogram_x)]
+        tau <- 0.01
+        threshold_diagnosis <- 0.2
+        n_simulations <- 100
+        #---Simulate MRCA ages & diagnosis ages
+        diagnosis_ages <- rep(NA, n_simulations)
+        for (i in 1:n_simulations) {
+            output <- simulate_continuous_moran_tau(
+                r = r_initial,
+                lambda_vec = lambda_vec,
+                u_vec = u_vec,
+                alpha = alpha,
+                max_time = max_time,
+                tau = tau
+            )
+            output$N1_frequency <- output$N1 / (output$N0 + output$N1)
+            diagnosis_age <- output$time[which(output$N1_frequency > threshold_diagnosis)[1]]
+            diagnosis_ages[i] <- diagnosis_age
+        }
+        simulation_histogram_y <- hist(diagnosis_ages, breaks = histogram_x, plot = FALSE)$counts
+        simulation_histogram_y <- c(simulation_histogram_y, n_simulations - sum(simulation_histogram_y))
+        simulation_histogram_y <- simulation_histogram_y / sum(simulation_histogram_y)
+        statistics_output <- data.frame(matrix(simulation_histogram_y, nrow = 1))
+        colnames(statistics_output) <- c(paste0("Age_group_", histogram_x[2:length(histogram_x)]), "Age_group_NA")
+        return(statistics_output)
+    }
+    if (parallel) {
+        library(parallel)
+        library(pbapply)
+        library(data.table)
+        cl <- makePSOCKcluster(detectCores() - 1)
+        clusterExport(
+            cl,
+            varlist = c("one_parameter", "simulate_continuous_moran_tau", "histogram_x"),
+            envir = environment()
+        )
+        stats <- parLapply(
+            cl = cl, 1:nrow(parameters),
+            function(i) {
+                sub_parameters <- as.data.frame(parameters[i, ])
+                colnames(sub_parameters) <- colnames(parameters)
+                one_parameter(sub_parameters)
+                # one_parameter(parameters[i, ])
+            }
+        )
+        stopCluster(cl)
+        stats <- rbindlist(stats)
+        class(stats) <- "data.frame"
+    } else {
+        stats <- c()
+        for (i in 1:nrow(parameters)) {
+            sub_parameters <- as.data.frame(parameters[i, ])
+            colnames(sub_parameters) <- colnames(parameters)
+            stats <- rbind(
+                stats,
+                one_parameter(sub_parameters)
+                # one_parameter(parameters[i, ])
+            )
+        }
+    }
+    #   Add column names
+    data <- cbind(parameters, as.data.frame(stats))
+    return(data)
+}
+
+parameters <- data.frame(lambda = 1:10)
+print(model(parameters))
+
+
+
+
+
+
 
 
 ###############################################################################
 # 3) FUNCTION TO INVERT λ FROM Mutant‐fraction = 20%
 ###############################################################################
 fit_lambda_by_threshold <- function(
-  t,
-  N0_init = 9999,
-  N1_init =    1,
-  lambda0  =   1,     # wild‐type growth rate
-  detect   = 0.20,    # 20% detection threshold
-  grid_min =  -5,
-  grid_max =  +5,
-  n_grid   = 101
-){
-  if (t <= 0) return(NA_real_)
+    t,
+    N0_init = 9999,
+    N1_init = 1,
+    lambda0 = 1, # wild‐type growth rate
+    detect = 0.20, # 20% detection threshold
+    grid_min = -5,
+    grid_max = +5,
+    n_grid = 101) {
+    if (t <= 0) {
+        return(NA_real_)
+    }
 
-  # the equation whose root we seek:
-  f_detect <- function(lambda1) {
-    N0t <- N0_init * exp(lambda0 * t)
-    N1t <- N1_init * exp(lambda1 * t)
-    (N1t / (N0t + N1t)) - detect
-  }
+    # the equation whose root we seek:
+    f_detect <- function(lambda1) {
+        N0t <- N0_init * exp(lambda0 * t)
+        N1t <- N1_init * exp(lambda1 * t)
+        (N1t / (N0t + N1t)) - detect
+    }
 
-  # 1) build a grid of lambdas
-  lambdas <- seq(grid_min, grid_max, length.out = n_grid)
-  vals    <- vapply(lambdas, f_detect, numeric(1))
+    # 1) build a grid of lambdas
+    lambdas <- seq(grid_min, grid_max, length.out = n_grid)
+    vals <- vapply(lambdas, f_detect, numeric(1))
 
-  # 2) drop any NA points
-  ok      <- is.finite(vals)
-  lambdas <- lambdas[ok]
-  vals     <- vals[ok]
+    # 2) drop any NA points
+    ok <- is.finite(vals)
+    lambdas <- lambdas[ok]
+    vals <- vals[ok]
 
-  # 3) look for the first place where sign flips
-  sgn <- sign(vals)
-  change_pts <- which(diff(sgn) != 0)
+    # 3) look for the first place where sign flips
+    sgn <- sign(vals)
+    change_pts <- which(diff(sgn) != 0)
 
-  if (length(change_pts) == 0) {
-    # no crossing found
-    return(NA_real_)
-  }
+    if (length(change_pts) == 0) {
+        # no crossing found
+        return(NA_real_)
+    }
 
-  # bracket for uniroot:
-  i <- change_pts[1]
-  lower <- lambdas[i]
-  upper <- lambdas[i+1]
+    # bracket for uniroot:
+    i <- change_pts[1]
+    lower <- lambdas[i]
+    upper <- lambdas[i + 1]
 
-  # 4) solve:
-  sol <- tryCatch(
-    uniroot(f_detect, lower=lower, upper=upper)$root,
-    error = function(e) NA_real_
-  )
+    # 4) solve:
+    sol <- tryCatch(
+        uniroot(f_detect, lower = lower, upper = upper)$root,
+        error = function(e) NA_real_
+    )
 
-  sol
+    sol
 }
 
 
@@ -103,10 +194,10 @@ fit_lambda_by_threshold <- function(
 real_sub$lambda_est <- vapply(real_sub$t, fit_lambda_by_threshold, numeric(1))
 
 # summarise per‐cancer
-lambda_cancer <- median(real_sub$lambda_est, na.rm=TRUE)
+lambda_cancer <- median(real_sub$lambda_est, na.rm = TRUE)
 message(
-  "Fitted λ for ", CANCER_TISSUE,
-  "  WGD=", WGD_STATUS, "  → ", round(lambda_cancer,3)
+    "Fitted λ for ", CANCER_TISSUE,
+    "  WGD=", WGD_STATUS, "  → ", round(lambda_cancer, 3)
 )
 
 # override your 'true' λ
@@ -204,10 +295,12 @@ model <- function(parameters, parallel = TRUE) {
 # 3) FUNCTIONS FOR PLOTTING
 ###############################################################################
 # Note: annotation_text now automatically uses the hyperparameter variables.
-annotation_text <- paste("Truth: lambda =", parameters_truth$lambda,
-                         ", u =", format(10^(parameters_truth$log_u), scientific = TRUE),
-                         ", NUM_PARTICLES =", NUM_PARTICLES,
-                         ", NUM_ITERATIONS =", NUM_ITERATIONS)
+annotation_text <- paste(
+    "Truth: lambda =", parameters_truth$lambda,
+    ", u =", format(10^(parameters_truth$log_u), scientific = TRUE),
+    ", NUM_PARTICLES =", NUM_PARTICLES,
+    ", NUM_ITERATIONS =", NUM_ITERATIONS
+)
 
 plot_ages <- function(smcdrf_results) {
     library(dplyr)
@@ -279,7 +372,7 @@ rprior <- function(Nparameters) {
 }
 dprior <- function(parameters) {
     probs <- dunif(parameters$log_u, log_u_range[1], log_u_range[2]) *
-             dunif(parameters$lambda, lambda_range[1], lambda_range[2])
+        dunif(parameters$lambda, lambda_range[1], lambda_range[2])
     return(probs)
 }
 
