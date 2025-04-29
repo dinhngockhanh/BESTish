@@ -62,7 +62,7 @@ model <- function(parameters, parallel = TRUE) {
         max_time <- histogram_x[length(histogram_x)]
         tau <- 0.01
         threshold_diagnosis <- 0.2
-        n_simulations <- 10
+        n_simulations <- 100
         #---Simulate MRCA ages & diagnosis ages
         diagnosis_ages <- rep(NA, n_simulations)
         for (i in 1:n_simulations) {
@@ -153,8 +153,8 @@ dprior <- function(parameters, parameter_id = "all") {
 ###############################################################################
 
 # hyperparameters for the ABC‐SMC‐RF
-NUM_PARTICLES <- 100 # particles per iteration
-NUM_ITERATIONS <- 5 # SMC rounds
+NUM_PARTICLES <- 500 # particles per iteration
+NUM_ITERATIONS <- 4 # SMC rounds
 NUM_TREES <- 500 # trees per Random Forest
 
 # run the single‐parameter ABC‐SMC‐RF
@@ -169,8 +169,13 @@ smcrf_results <- smcrf(
     parallel          = TRUE
 )
 
-# plot the resulting posterior over lambda
-plot_smcrf_marginal(
-    smcrf_results    = smcrf_results,
-    plot_hist        = TRUE
+plot_compare_marginal(
+    abc_results = smcrf_results,
+    # parameters_labels = parameters_labels,
+    plot_statistics = FALSE,
+    plot_hist = TRUE,
+    plot_prior = TRUE
 )
+
+final_parameters <- smcrf_results[[paste0("Iteration_", NUM_ITERATIONS + 1)]]$parameters
+final_statistics <- smcrf_results[[paste0("Iteration_", NUM_ITERATIONS + 1)]]$statistics

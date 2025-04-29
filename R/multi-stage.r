@@ -24,8 +24,12 @@ simulate_continuous_moran_tau <- function(r,
     if (!is.null(seed)) set.seed(seed)
     #---Initiate the system
     n_types <- length(lambda_vec)
-    state <- numeric(n_types)
-    state[1] <- r
+    if (length(r) == 1) {
+        state <- numeric(n_types)
+        state[1] <- r
+    } else {
+        state <- r
+    }
     t <- 0
     #---Tau-leaping algorithm
     record_time <- seq(0, max_time, by = tau)
