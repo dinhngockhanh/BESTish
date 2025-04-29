@@ -1,25 +1,25 @@
-# setwd("/Users/dinhngockhanh/My Drive (knd2127@columbia.edu)/RESEARCH AND EVERYTHING/Projects/GITHUB/abcsmcrf/R")
-setwd("/Users/keitotaketomi/Downloads/abc-smc-rf 2/R")
+setwd("/Users/dinhngockhanh/My Drive (knd2127@columbia.edu)/RESEARCH AND EVERYTHING/Projects/GITHUB/abcsmcrf/R")
+# setwd("/Users/keitotaketomi/Downloads/abc-smc-rf 2/R")
 files_sources <- list.files(pattern = "\\.[rR]$")
 sapply(files_sources, source)
 
-# setwd("/Users/dinhngockhanh/My Drive (knd2127@columbia.edu)/RESEARCH AND EVERYTHING/Projects/GITHUB/DriverSelectionSweep/R")
-setwd("/Users/keitotaketomi/Documents/DriverSelectionSweep/R")
+setwd("/Users/dinhngockhanh/My Drive (knd2127@columbia.edu)/RESEARCH AND EVERYTHING/Projects/GITHUB/DriverSelectionSweep/R")
+# setwd("/Users/keitotaketomi/Documents/DriverSelectionSweep/R")
 files_sources <- list.files(pattern = "\\.[rR]$")
 sapply(files_sources, source)
 
-# setwd("/Users/dinhngockhanh/My Drive (knd2127@columbia.edu)/RESEARCH AND EVERYTHING/Projects/GITHUB/DriverSelectionSweep/vignettes")
-setwd("/Users/keitotaketomi/Documents/DriverSelectionSweep/vignettes")
+setwd("/Users/dinhngockhanh/My Drive (knd2127@columbia.edu)/RESEARCH AND EVERYTHING/Projects/GITHUB/DriverSelectionSweep/vignettes")
+# setwd("/Users/keitotaketomi/Documents/DriverSelectionSweep/vignettes")
 
 
 
 ###############################################################################
 # 2) LOAD THE REAL PATIENT TIMING TABLE
 ###############################################################################
-real_df <- read.csv(
-     # "/Users/dinhngockhanh/My Drive (knd2127@columbia.edu)/RESEARCH AND EVERYTHING/Projects/DATASETS/PCAWG/evolution_and_heterogeneity/2018-07-24-wgdMrcaTiming.txt",
-  "/Users/keitotaketomi/Documents/2018-07-24-wgdMrcaTiming.csv",
-  stringsAsFactors = FALSE, header = TRUE
+real_df <- read.table(
+    "/Users/dinhngockhanh/My Drive (knd2127@columbia.edu)/RESEARCH AND EVERYTHING/Projects/DATASETS/PCAWG/evolution_and_heterogeneity/2018-07-24-wgdMrcaTiming.txt",
+    # "/Users/keitotaketomi/Documents/2018-07-24-wgdMrcaTiming.csv",
+    stringsAsFactors = FALSE, header = TRUE
 )
 CANCER_TISSUE <- "Liver-HCC"
 WGD_STATUS <- FALSE
@@ -51,6 +51,7 @@ statistics_target <- data.frame(matrix(histogram_y, nrow = 1))
 colnames(statistics_target) <- c(paste0("Age_group_", histogram_x[2:length(histogram_x)]), "Age_group_NA")
 
 model <- function(parameters, parallel = TRUE) {
+    print(nrow(parameters))
     one_parameter <- function(parameter) {
         lambda <- as.numeric(parameter$lambda)
         #---Model parameters
@@ -61,7 +62,7 @@ model <- function(parameters, parallel = TRUE) {
         max_time <- histogram_x[length(histogram_x)]
         tau <- 0.01
         threshold_diagnosis <- 0.2
-        n_simulations <- 100
+        n_simulations <- 10
         #---Simulate MRCA ages & diagnosis ages
         diagnosis_ages <- rep(NA, n_simulations)
         for (i in 1:n_simulations) {
@@ -133,14 +134,18 @@ lambda_max <- 10
 
 # (b) prior sampler: must be called rprior(Nparameters)
 rprior <- function(Nparameters) {
-  data.frame(
-    lambda = runif(Nparameters, lambda_min, lambda_max)
-  )
+    data.frame(
+        lambda = runif(Nparameters, min = lambda_min, max = lambda_max)
+    )
 }
 
 # (c) density of that prior: smcrf will pass a data.frame with column 'lambda'
-dprior <- function(parameters) {
-  dunif(parameters$lambda, lambda_min, lambda_max)
+dprior <- function(parameters, parameter_id = "all") {
+    probs <- rep(1, nrow(parameters))
+    if (parameter_id %in% c("all", "lambda")) {
+        probs <- probs * dunif(parameters[["lambda"]], min = lambda_min, max = lambda_max)
+    }
+    return(probs)
 }
 
 ###############################################################################
@@ -148,26 +153,24 @@ dprior <- function(parameters) {
 ###############################################################################
 
 # hyperparameters for the ABC‐SMC‐RF
-NUM_PARTICLES  <- 100    # particles per iteration
-NUM_ITERATIONS <-   5    # SMC rounds
-NUM_TREES      <- 500    # trees per Random Forest
+NUM_PARTICLES <- 100 # particles per iteration
+NUM_ITERATIONS <- 5 # SMC rounds
+NUM_TREES <- 500 # trees per Random Forest
 
 # run the single‐parameter ABC‐SMC‐RF
 smcrf_results <- smcrf(
-  method            = "smcrf-single-param",
-  statistics_target = statistics_target,  
-  model             = model,          
-  rprior            = rprior,
-  dprior            = dprior,
-  nParticles        = rep(NUM_PARTICLES, NUM_ITERATIONS),
-  ntrees            = NUM_TREES,
-  parallel          = TRUE                
+    method            = "smcrf-single-param",
+    statistics_target = statistics_target,
+    model             = model,
+    rprior            = rprior,
+    dprior            = dprior,
+    nParticles        = rep(NUM_PARTICLES, NUM_ITERATIONS),
+    ntrees            = NUM_TREES,
+    parallel          = TRUE
 )
 
 # plot the resulting posterior over lambda
 plot_smcrf_marginal(
-  smcrf_results    = smcrf_results,
-  parameters_truth = data.frame(lambda = NA),
-  plot_hist        = TRUE,
-  plot_prior       = TRUE
+    smcrf_results    = smcrf_results,
+    plot_hist        = TRUE
 )
