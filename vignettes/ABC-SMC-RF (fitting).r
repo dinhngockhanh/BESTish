@@ -1,15 +1,15 @@
-#setwd("/Users/dinhngockhanh/My Drive (knd2127@columbia.edu)/RESEARCH AND EVERYTHING/Projects/GITHUB/abcsmcrf/R")
-setwd("/Users/keitotaketomi/Downloads/abc-smc-rf 2/R")
+setwd("/Users/dinhngockhanh/My Drive (knd2127@columbia.edu)/RESEARCH AND EVERYTHING/Projects/GITHUB/abcsmcrf/R")
+# setwd("/Users/keitotaketomi/Downloads/abc-smc-rf 2/R")
 files_sources <- list.files(pattern = "\\.[rR]$")
 sapply(files_sources, source)
 
-#etwd("/Users/dinhngockhanh/My Drive (knd2127@columbia.edu)/RESEARCH AND EVERYTHING/Projects/GITHUB/DriverSelectionSweep/R")
-setwd("/Users/keitotaketomi/Documents/DriverSelectionSweep/R")
+setwd("/Users/dinhngockhanh/My Drive (knd2127@columbia.edu)/RESEARCH AND EVERYTHING/Projects/GITHUB/DriverSelectionSweep/R")
+# setwd("/Users/keitotaketomi/Documents/DriverSelectionSweep/R")
 files_sources <- list.files(pattern = "\\.[rR]$")
 sapply(files_sources, source)
 
-#setwd("/Users/dinhngockhanh/My Drive (knd2127@columbia.edu)/RESEARCH AND EVERYTHING/Projects/GITHUB/DriverSelectionSweep/vignettes")
-setwd("/Users/keitotaketomi/Documents/DriverSelectionSweep/vignettes")
+setwd("/Users/dinhngockhanh/My Drive (knd2127@columbia.edu)/RESEARCH AND EVERYTHING/Projects/GITHUB/DriverSelectionSweep/vignettes")
+# setwd("/Users/keitotaketomi/Documents/DriverSelectionSweep/vignettes")
 
 
 
@@ -17,8 +17,8 @@ setwd("/Users/keitotaketomi/Documents/DriverSelectionSweep/vignettes")
 # 2) LOAD THE REAL PATIENT TIMING TABLE
 ###############################################################################
 real_df <- read.table(
-    #"/Users/dinhngockhanh/My Drive (knd2127@columbia.edu)/RESEARCH AND EVERYTHING/Projects/DATASETS/PCAWG/evolution_and_heterogeneity/2018-07-24-wgdMrcaTiming.txt",
-    "/Users/keitotaketomi/Documents/2018-07-24-wgdMrcaTiming.txt",
+    "/Users/dinhngockhanh/My Drive (knd2127@columbia.edu)/RESEARCH AND EVERYTHING/Projects/DATASETS/PCAWG/evolution_and_heterogeneity/2018-07-24-wgdMrcaTiming.txt",
+    # "/Users/keitotaketomi/Documents/2018-07-24-wgdMrcaTiming.txt",
     stringsAsFactors = FALSE, header = TRUE
 )
 CANCER_TISSUE <- "Liver-HCC"
@@ -57,12 +57,13 @@ model <- function(parameters, parallel = TRUE) {
         #---Model parameters
         r_initial <- c(10000, 1)
         lambda_vec <- c(0.1, lambda)
+        threshold_diagnosis <- 0.05
+        #---Fixed parameters
         u_vec <- c(0, 0)
         alpha <- 1
-        max_time <- histogram_x[length(histogram_x)]
         tau <- 0.01
-        threshold_diagnosis <- 0.05
         n_simulations <- 100
+        max_time <- histogram_x[length(histogram_x)]
         #---Simulate MRCA ages & diagnosis ages
         diagnosis_ages <- rep(NA, n_simulations)
         for (i in 1:n_simulations) {
@@ -153,9 +154,9 @@ dprior <- function(parameters, parameter_id = "all") {
 ###############################################################################
 
 # hyperparameters for the ABC‐SMC‐RF
-NUM_PARTICLES <- 1000 
-NUM_ITERATIONS <- 5 
-NUM_TREES <- 500 
+NUM_PARTICLES <- 1000
+NUM_ITERATIONS <- 5
+NUM_TREES <- 500
 
 # run the single‐parameter ABC‐SMC‐RF
 smcrf_results <- smcrf(
@@ -180,75 +181,11 @@ plot_compare_marginal(
 final_parameters <- smcrf_results[[paste0("Iteration_", NUM_ITERATIONS + 1)]]$parameters
 final_statistics <- smcrf_results[[paste0("Iteration_", NUM_ITERATIONS + 1)]]$statistics
 
-
-plot_age_distribution<-function(){library(dplyr)
-library(tidyr)
-library(ggplot2)
-
-# 1) reshape your final simulations into “long” form
-sim_long <- final_statistics %>%
-  mutate(sim_id = row_number()) %>%                
-  pivot_longer(
-    cols      = starts_with("Age_group_"),
-    names_to  = "bin",
-    values_to = "freq"
-  ) %>%
-  mutate(
-    age = as.numeric(sub("Age_group_", "", bin))
-  )
-
-# 2) compute mean and sd at each age‐bin
-sim_summary <- sim_long %>%
-  group_by(age) %>%
-  summarise(
-    mean_freq = mean(freq),
-    sd_freq   = sd(freq),
-    .groups   = "drop"
-  )
-
-# 3) reshape your target histogram the same way
-target_long <- statistics_target %>%
-  pivot_longer(
-    cols      = everything(),
-    names_to  = "bin",
-    values_to = "freq"
-  ) %>%
-  mutate(
-    age = as.numeric(sub("Age_group_", "", bin))
-  )
-
-# 4) now plot: steelblue ribbon = mean ± SD, steelblue line = mean, red = target
-p<-ggplot() +
-  # ribbon of ± one sd
-  geom_ribbon(
-    data = sim_summary,
-    aes(x = age,
-        ymin = pmax(mean_freq - sd_freq, 0),
-        ymax = mean_freq + sd_freq),
-    fill  = "steelblue",
-    alpha = 0.2
-  ) +
-  # mean simulation
-  geom_line(
-    data  = sim_summary,
-    aes(x = age, y = mean_freq),
-    color = "steelblue",
-    size  = 1
-  ) +
-  # target curve
-  geom_line(
-    data  = target_long,
-    aes(x = age, y = freq),
-    color = "firebrick",
-    size  = 1.2
-  ) +
-  theme_minimal(base_size = 14) +
-  labs(
-    x     = "Age of diagnosis (years)",
-    y     = "Normalized frequency",
-    title = paste0(
-      CANCER_TISSUE,
-      " (WGD=", WGD_STATUS, "): sim mean±SD vs. target"
-    )
-  )
-}
+p <- plot_age_distribution(
+    statistics_simulated = final_statistics,
+    statistics_target = statistics_target,
+    plot_title = paste0(CANCER_TISSUE, " (WGD=", WGD_STATUS, "): sim mean±SD vs. target")
+)
+png(paste0(CANCER_TISSUE, "_WGD=", WGD_STATUS, "_results.png"), res = 150, width = 30, height = 15, units = "in", pointsize = 12)
+print(p)
+dev.off()
