@@ -239,3 +239,77 @@ variance_ODE_solver_OLD <- function(mean_ode_df, lambda_vec, u_vec, alpha) {
     }
     return(res)
 }
+
+plot_age_distribution <- function(statistics_simulated,
+                                  statistics_target,
+                                  plot_title) {
+    library(dplyr)
+    library(tidyr)
+    library(ggplot2)
+
+    # 1) reshape your final simulations into “long” form
+    sim_long <- statistics_simulated %>%
+        mutate(sim_id = row_number()) %>%
+        pivot_longer(
+            cols      = starts_with("Age_group_"),
+            names_to  = "bin",
+            values_to = "freq"
+        ) %>%
+        mutate(
+            age = as.numeric(sub("Age_group_", "", bin))
+        )
+
+    # 2) compute mean and sd at each age‐bin
+    sim_summary <- sim_long %>%
+        group_by(age) %>%
+        summarise(
+            mean_freq = mean(freq),
+            sd_freq   = sd(freq),
+            .groups   = "drop"
+        )
+
+    # 3) reshape your target histogram the same way
+    target_long <- statistics_target %>%
+        pivot_longer(
+            cols      = everything(),
+            names_to  = "bin",
+            values_to = "freq"
+        ) %>%
+        mutate(
+            age = as.numeric(sub("Age_group_", "", bin))
+        )
+
+    # 4) now plot: steelblue ribbon = mean ± SD, steelblue line = mean, red = target
+    p <- ggplot() +
+        # ribbon of ± one sd
+        geom_ribbon(
+            data = sim_summary,
+            aes(
+                x = age,
+                ymin = pmax(mean_freq - sd_freq, 0),
+                ymax = mean_freq + sd_freq
+            ),
+            fill = "steelblue",
+            alpha = 0.2
+        ) +
+        # mean simulation
+        geom_line(
+            data  = sim_summary,
+            aes(x = age, y = mean_freq),
+            color = "steelblue",
+            size  = 1
+        ) +
+        # target curve
+        geom_line(
+            data  = target_long,
+            aes(x = age, y = freq),
+            color = "firebrick",
+            size  = 1.2
+        ) +
+        theme_minimal(base_size = 14) +
+        labs(
+            x = "Age of diagnosis (years)",
+            y = "Normalized frequency",
+            title = plot_title
+        )
+}
