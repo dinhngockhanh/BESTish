@@ -1,15 +1,15 @@
-setwd("/Users/dinhngockhanh/My Drive (knd2127@columbia.edu)/RESEARCH AND EVERYTHING/Projects/GITHUB/abcsmcrf/R")
-# setwd("/Users/keitotaketomi/Downloads/abc-smc-rf 2/R")
+#setwd("/Users/dinhngockhanh/My Drive (knd2127@columbia.edu)/RESEARCH AND EVERYTHING/Projects/GITHUB/abcsmcrf/R")
+setwd("/Users/keitotaketomi/Downloads/abc-smc-rf 2/R")
 files_sources <- list.files(pattern = "\\.[rR]$")
 sapply(files_sources, source)
 
-setwd("/Users/dinhngockhanh/My Drive (knd2127@columbia.edu)/RESEARCH AND EVERYTHING/Projects/GITHUB/DriverSelectionSweep/R")
-# setwd("/Users/keitotaketomi/Documents/DriverSelectionSweep/R")
+#setwd("/Users/dinhngockhanh/My Drive (knd2127@columbia.edu)/RESEARCH AND EVERYTHING/Projects/GITHUB/DriverSelectionSweep/R")
+setwd("/Users/keitotaketomi/Documents/DriverSelectionSweep/R")
 files_sources <- list.files(pattern = "\\.[rR]$")
 sapply(files_sources, source)
 
-setwd("/Users/dinhngockhanh/My Drive (knd2127@columbia.edu)/RESEARCH AND EVERYTHING/Projects/GITHUB/DriverSelectionSweep/vignettes")
-# setwd("/Users/keitotaketomi/Documents/DriverSelectionSweep/vignettes")
+#setwd("/Users/dinhngockhanh/My Drive (knd2127@columbia.edu)/RESEARCH AND EVERYTHING/Projects/GITHUB/DriverSelectionSweep/vignettes")
+setwd("/Users/keitotaketomi/Documents/DriverSelectionSweep/vignettes")
 
 
 
@@ -17,8 +17,8 @@ setwd("/Users/dinhngockhanh/My Drive (knd2127@columbia.edu)/RESEARCH AND EVERYTH
 # 2) LOAD THE REAL PATIENT TIMING TABLE
 ###############################################################################
 real_df <- read.table(
-    "/Users/dinhngockhanh/My Drive (knd2127@columbia.edu)/RESEARCH AND EVERYTHING/Projects/DATASETS/PCAWG/evolution_and_heterogeneity/2018-07-24-wgdMrcaTiming.txt",
-    # "/Users/keitotaketomi/Documents/2018-07-24-wgdMrcaTiming.txt",
+    #"/Users/dinhngockhanh/My Drive (knd2127@columbia.edu)/RESEARCH AND EVERYTHING/Projects/DATASETS/PCAWG/evolution_and_heterogeneity/2018-07-24-wgdMrcaTiming.txt",
+    "/Users/keitotaketomi/Documents/2018-07-24-wgdMrcaTiming.txt",
     stringsAsFactors = FALSE, header = TRUE
 )
 CANCER_TISSUE <- "Liver-HCC"
@@ -55,9 +55,9 @@ model <- function(parameters, parallel = TRUE) {
     one_parameter <- function(parameter) {
         lambda <- as.numeric(parameter$lambda)
         #---Model parameters
-        r_initial <- c(10000, 1)
-        lambda_vec <- c(0.1, lambda)
-        threshold_diagnosis <- 0.05
+        r_initial <- c(100000000, 1)
+        lambda_vec <- c(0.01, lambda)
+        threshold_diagnosis <- 0.001
         #---Fixed parameters
         u_vec <- c(0, 0)
         alpha <- 1
@@ -158,28 +158,32 @@ NUM_PARTICLES <- 1000
 NUM_ITERATIONS <- 5
 NUM_TREES <- 500
 
-# run the single‐parameter ABC‐SMC‐RF
-smcrf_results <- smcrf(
-    method            = "smcrf-single-param",
-    statistics_target = statistics_target,
-    model             = model,
-    rprior            = rprior,
-    dprior            = dprior,
-    nParticles        = rep(NUM_PARTICLES, NUM_ITERATIONS),
-    ntrees            = NUM_TREES,
-    parallel          = TRUE
-)
+# # run the single‐parameter ABC‐SMC‐RF
+# smcrf_results <- smcrf(
+#     method            = "smcrf-single-param",
+#     statistics_target = statistics_target,
+#     model             = model,
+#     rprior            = rprior,
+#     dprior            = dprior,
+#     nParticles        = rep(NUM_PARTICLES, NUM_ITERATIONS),
+#     ntrees            = NUM_TREES,
+#     parallel          = TRUE
+# )
 
-plot_compare_marginal(
-    abc_results = smcrf_results,
-    # parameters_labels = parameters_labels,
-    plot_statistics = FALSE,
-    plot_hist = TRUE,
-    plot_prior = TRUE
-)
+# plot_compare_marginal(
+#     abc_results = smcrf_results,
+#     # parameters_labels = parameters_labels,
+#     plot_statistics = FALSE,
+#     plot_hist = TRUE,
+#     plot_prior = TRUE
+# )
 
-final_parameters <- smcrf_results[[paste0("Iteration_", NUM_ITERATIONS + 1)]]$parameters
-final_statistics <- smcrf_results[[paste0("Iteration_", NUM_ITERATIONS + 1)]]$statistics
+# final_parameters <- smcrf_results[[paste0("Iteration_", NUM_ITERATIONS + 1)]]$parameters
+# final_statistics <- smcrf_results[[paste0("Iteration_", NUM_ITERATIONS + 1)]]$statistics
+
+final_statistics<-model(
+    parameters = data.frame(lambda=rep(14,10))
+)
 
 p <- plot_age_distribution(
     statistics_simulated = final_statistics,
@@ -189,3 +193,76 @@ p <- plot_age_distribution(
 png(paste0(CANCER_TISSUE, "_WGD=", WGD_STATUS, "_results.png"), res = 150, width = 30, height = 15, units = "in", pointsize = 12)
 print(p)
 dev.off()
+
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+
+# 1) pivot into long form, drop the NA‐bin, and parse age
+sim_long <- final_statistics %>%
+  mutate(sim_id = row_number()) %>% 
+  pivot_longer(
+    cols     = starts_with("Age_group_"),
+    names_to = "bin",
+    values_to= "freq"
+  ) %>%
+  filter(bin != "Age_group_NA") %>%
+  mutate(
+    age = as.integer(sub("Age_group_", "", bin))
+  )
+
+# 2) compute mean ± SD at each age
+sim_summary <- sim_long %>%
+  group_by(age) %>%
+  dplyr::summarise(
+    mean_freq = mean(freq, na.rm = TRUE),
+    sd_freq   = sd(freq,   na.rm = TRUE),
+    .groups   = "drop"
+  )
+
+# 3) reshape target in the same way
+target_long <- statistics_target %>%
+  pivot_longer(
+    cols     = everything(),
+    names_to = "bin",
+    values_to= "freq"
+  ) %>%
+  filter(bin != "Age_group_NA") %>%
+  mutate(
+    age = as.integer(sub("Age_group_", "", bin))
+  )
+
+# 4) plot
+p <- ggplot() +
+  geom_ribbon(
+    data = sim_summary,
+    aes(x = age,
+        ymin = mean_freq - sd_freq,
+        ymax = mean_freq + sd_freq),
+    fill  = "steelblue",
+    alpha = 0.3
+  ) +
+  geom_line(
+    data = sim_summary,
+    aes(x = age, y = mean_freq),
+    color = "steelblue",
+    size  = 1
+  ) +
+  geom_line(
+    data  = target_long,
+    aes(x = age, y = freq),
+    color = "firebrick",
+    size  = 1.2
+  ) +
+  theme_minimal(base_size = 14) +
+  labs(
+    x     = "Age of diagnosis (years)",
+    y     = "Normalized frequency",
+    title = paste0(
+      CANCER_TISSUE,
+      " (WGD=", WGD_STATUS, 
+      "): Simulated mean ± SD vs. Target"
+    )
+  )
+
+print(p)
