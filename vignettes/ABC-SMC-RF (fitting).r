@@ -56,11 +56,11 @@ model <- function(parameters, parallel = TRUE) {
         lambda <- as.numeric(parameter$lambda)
         #---Model parameters
         r_initial <- c(100000000, 1)
-        lambda_vec <- c(0.01, lambda)
+        lambda_vec <- c(0.00001, lambda)
         threshold_diagnosis <- 0.001
+        alpha <- 1
         #---Fixed parameters
         u_vec <- c(0, 0)
-        alpha <- 1
         tau <- 0.01
         n_simulations <- 100
         max_time <- histogram_x[length(histogram_x)]
