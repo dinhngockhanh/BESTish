@@ -47,8 +47,9 @@ histogram_x <- 0:(ceiling(max(real_sub$t)))
 histogram_y <- hist(real_sub$t, breaks = histogram_x, plot = FALSE)$counts
 histogram_y <- c(histogram_y / sum(histogram_y), 0)
 
-statistics_target <- data.frame(matrix(histogram_y, nrow = 1))
-colnames(statistics_target) <- c(paste0("Age_group_", histogram_x[2:length(histogram_x)]), "Age_group_NA")
+# statistics_target <- data.frame(matrix(histogram_y, nrow = 1))
+# colnames(statistics_target) <- c(paste0("Age_group_", histogram_x[2:length(histogram_x)]), "Age_group_NA")
+statistics_target <- data.frame(distance = 0)
 
 model <- function(parameters, parallel = TRUE) {
     one_parameter <- function(parameter) {
@@ -81,8 +82,9 @@ model <- function(parameters, parallel = TRUE) {
         simulation_histogram_y <- hist(diagnosis_ages, breaks = histogram_x, plot = FALSE)$counts
         simulation_histogram_y <- c(simulation_histogram_y, n_simulations - sum(simulation_histogram_y))
         simulation_histogram_y <- simulation_histogram_y / sum(simulation_histogram_y)
-        statistics_output <- data.frame(matrix(simulation_histogram_y, nrow = 1))
-        colnames(statistics_output) <- c(paste0("Age_group_", histogram_x[2:length(histogram_x)]), "Age_group_NA")
+        # statistics_output <- data.frame(matrix(simulation_histogram_y, nrow = 1))
+        # colnames(statistics_output) <- c(paste0("Age_group_", histogram_x[2:length(histogram_x)]), "Age_group_NA")
+        statistics_output <- data.frame(distance = sum(abs(simulation_histogram_y - histogram_y)))
         return(statistics_output)
     }
     if (parallel) {
@@ -92,7 +94,7 @@ model <- function(parameters, parallel = TRUE) {
         cl <- makePSOCKcluster(detectCores() - 1)
         clusterExport(
             cl,
-            varlist = c("one_parameter", "simulate_continuous_moran_tau", "histogram_x"),
+            varlist = c("one_parameter", "simulate_continuous_moran_tau", "histogram_x", "histogram_y"),
             envir = environment()
         )
         stats <- parLapply(
@@ -153,7 +155,7 @@ dprior <- function(parameters, parameter_id = "all") {
 ###############################################################################
 
 # hyperparameters for the ABC‐SMC‐RF
-NUM_PARTICLES <- 5000
+NUM_PARTICLES <- 500
 NUM_ITERATIONS <- 5
 NUM_TREES <- 500
 
@@ -194,78 +196,3 @@ p <- plot_age_distribution(
 png(paste0(CANCER_TISSUE, "_WGD=", WGD_STATUS, "_results.png"), res = 150, width = 30, height = 15, units = "in", pointsize = 12)
 print(p)
 dev.off()
-
-library(dplyr)
-library(tidyr)
-library(ggplot2)
-
-# 1) pivot into long form, drop the NA‐bin, and parse age
-sim_long <- final_statistics %>%
-    mutate(sim_id = row_number()) %>%
-    pivot_longer(
-        cols = starts_with("Age_group_"),
-        names_to = "bin",
-        values_to = "freq"
-    ) %>%
-    filter(bin != "Age_group_NA") %>%
-    mutate(
-        age = as.integer(sub("Age_group_", "", bin))
-    )
-
-# 2) compute mean ± SD at each age
-sim_summary <- sim_long %>%
-    group_by(age) %>%
-    dplyr::summarise(
-        mean_freq = mean(freq, na.rm = TRUE),
-        sd_freq   = sd(freq, na.rm = TRUE),
-        .groups   = "drop"
-    )
-
-# 3) reshape target in the same way
-target_long <- statistics_target %>%
-    pivot_longer(
-        cols = everything(),
-        names_to = "bin",
-        values_to = "freq"
-    ) %>%
-    filter(bin != "Age_group_NA") %>%
-    mutate(
-        age = as.integer(sub("Age_group_", "", bin))
-    )
-
-# 4) plot
-p <- ggplot() +
-    geom_ribbon(
-        data = sim_summary,
-        aes(
-            x = age,
-            ymin = mean_freq - sd_freq,
-            ymax = mean_freq + sd_freq
-        ),
-        fill = "steelblue",
-        alpha = 0.3
-    ) +
-    geom_line(
-        data = sim_summary,
-        aes(x = age, y = mean_freq),
-        color = "steelblue",
-        size = 1
-    ) +
-    geom_line(
-        data  = target_long,
-        aes(x = age, y = freq),
-        color = "firebrick",
-        size  = 1.2
-    ) +
-    theme_minimal(base_size = 14) +
-    labs(
-        x = "Age of diagnosis (years)",
-        y = "Normalized frequency",
-        title = paste0(
-            CANCER_TISSUE,
-            " (WGD=", WGD_STATUS,
-            "): Simulated mean ± SD vs. Target"
-        )
-    )
-
-print(p)
