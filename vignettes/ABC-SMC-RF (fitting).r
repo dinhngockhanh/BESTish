@@ -1,15 +1,15 @@
-setwd("/Users/dinhngockhanh/My Drive (knd2127@columbia.edu)/RESEARCH AND EVERYTHING/Projects/GITHUB/abcsmcrf/R")
-# setwd("/Users/keitotaketomi/Downloads/abc-smc-rf 2/R")
+#setwd("/Users/dinhngockhanh/My Drive (knd2127@columbia.edu)/RESEARCH AND EVERYTHING/Projects/GITHUB/abcsmcrf/R")
+setwd("/Users/keitotaketomi/Downloads/abc-smc-rf 2/R")
 files_sources <- list.files(pattern = "\\.[rR]$")
 sapply(files_sources, source)
 
-setwd("/Users/dinhngockhanh/My Drive (knd2127@columbia.edu)/RESEARCH AND EVERYTHING/Projects/GITHUB/DriverSelectionSweep/R")
-# setwd("/Users/keitotaketomi/Documents/DriverSelectionSweep/R")
+#setwd("/Users/dinhngockhanh/My Drive (knd2127@columbia.edu)/RESEARCH AND EVERYTHING/Projects/GITHUB/DriverSelectionSweep/R")
+setwd("/Users/keitotaketomi/Documents/DriverSelectionSweep/R")
 files_sources <- list.files(pattern = "\\.[rR]$")
 sapply(files_sources, source)
 
-setwd("/Users/dinhngockhanh/My Drive (knd2127@columbia.edu)/RESEARCH AND EVERYTHING/Projects/GITHUB/DriverSelectionSweep/vignettes")
-# setwd("/Users/keitotaketomi/Documents/DriverSelectionSweep/vignettes")
+#setwd("/Users/dinhngockhanh/My Drive (knd2127@columbia.edu)/RESEARCH AND EVERYTHING/Projects/GITHUB/DriverSelectionSweep/vignettes")
+setwd("/Users/keitotaketomi/Documents/DriverSelectionSweep/vignettes")
 
 
 
@@ -17,8 +17,8 @@ setwd("/Users/dinhngockhanh/My Drive (knd2127@columbia.edu)/RESEARCH AND EVERYTH
 # 2) LOAD THE REAL PATIENT TIMING TABLE
 ###############################################################################
 real_df <- read.table(
-    "/Users/dinhngockhanh/My Drive (knd2127@columbia.edu)/RESEARCH AND EVERYTHING/Projects/DATASETS/PCAWG/evolution_and_heterogeneity/2018-07-24-wgdMrcaTiming.txt",
-    # "/Users/keitotaketomi/Documents/2018-07-24-wgdMrcaTiming.txt",
+    #"/Users/dinhngockhanh/My Drive (knd2127@columbia.edu)/RESEARCH AND EVERYTHING/Projects/DATASETS/PCAWG/evolution_and_heterogeneity/2018-07-24-wgdMrcaTiming.txt",
+    "/Users/keitotaketomi/Documents/2018-07-24-wgdMrcaTiming.txt",
     stringsAsFactors = FALSE, header = TRUE
 )
 CANCER_TISSUE <- "Liver-HCC"
