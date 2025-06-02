@@ -183,7 +183,7 @@ dprior <- function(parameters, parameter_id = "all") {
     return(probs)
 }
 
-NUM_PARTICLES <- 5000
+NUM_PARTICLES <- 10000
 NUM_ITERATIONS <- 5
 NUM_TREES <- 500
 
