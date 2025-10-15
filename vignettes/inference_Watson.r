@@ -1,13 +1,4 @@
 suppressPackageStartupMessages({
-    need <- c("pracma", "MASS", "ggplot2", "dplyr", "viridis", "gridExtra")
-    have <- rownames(installed.packages())
-    miss <- setdiff(need, have)
-    if (length(miss) > 0) {
-        stop(
-            "Missing R packages: ", paste(miss, collapse = ", "),
-            "\nInstall to R_LIBS_USER: ", Sys.getenv("R_LIBS_USER")
-        )
-    }
     library(pracma)
     library(MASS)
     library(ggplot2)
