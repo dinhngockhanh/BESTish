@@ -1,7 +1,0 @@
-chromosome,start,end,width,type,1000genomes_AF,1000genomes_ID,Callers,NumCallers,cosmic,dbsnp,repeat_masker,dbsnp_somatic,VAF,n_vaf,t_alt_count,t_ref_count,n_alt_count,n_ref_count,model_score,Variant_Classification,signature_R1,signature_R2,signature_N3,snv_near_indel,total_cn,major_cn,minor_cn,karyotype,sample,gene
-14,106091215,106091215,1,snv_mnv,0.0019968,rs145715797,"broad,dkfz,muse,sanger",4,COSN19649871,rs145715797,NA,FALSE,0.2432,NA,18,56,NA,NA,NA,RNA,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,cdc672cc-35df-4f10-88f1-d3e40dabf601,MIR8071-1
-15,48067608,48067608,1,snv_mnv,0.0015974,rs570192424,"broad,muse",2,COSN1677703,rs570192424,AluSx,FALSE,0.1351,NA,5,32,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,cdc672cc-35df-4f10-88f1-d3e40dabf601,SEMA6D
-15,89817810,89817810,1,snv_mnv,NA,NA,"broad,muse",2,COSN1181716,NA,NA,FALSE,0.2083,NA,5,19,NA,NA,NA,Intron,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,cdc672cc-35df-4f10-88f1-d3e40dabf601,FANCI
-18,2230076,2230076,1,snv_mnv,1.9968e-4,rs576247007,"broad,dkfz,muse,sanger",4,COSN17802745,rs576247007,L1M3c,FALSE,0.129,NA,8,54,NA,NA,NA,lincRNA,FALSE,FALSE,FALSE,FALSE,4,3,1,3_1,cdc672cc-35df-4f10-88f1-d3e40dabf601,NA
-20,1483037,1483037,1,snv_mnv,1.9968e-4,rs575163618,"broad,muse",2,COSN14837543,rs575163618,L1M4c,FALSE,0.2273,NA,5,17,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,cdc672cc-35df-4f10-88f1-d3e40dabf601,NA
-4,53639142,53639142,1,snv_mnv,NA,NA,"broad,muse",2,COSN9792088,NA,L1PA5,FALSE,0.0732,NA,3,38,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,cdc672cc-35df-4f10-88f1-d3e40dabf601,NA

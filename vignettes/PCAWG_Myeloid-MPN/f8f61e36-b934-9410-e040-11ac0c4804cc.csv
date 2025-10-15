@@ -1,5 +1,0 @@
-chromosome,start,end,width,type,1000genomes_AF,1000genomes_ID,Callers,NumCallers,cosmic,dbsnp,repeat_masker,dbsnp_somatic,VAF,n_vaf,t_alt_count,t_ref_count,n_alt_count,n_ref_count,model_score,Variant_Classification,signature_R1,signature_R2,signature_N3,snv_near_indel,total_cn,major_cn,minor_cn,karyotype,sample,gene
-11,93736145,93736145,1,snv_mnv,3.9936e-4,rs570546926,"broad,dkfz,muse",3,COSN8879271,rs570546926,NA,FALSE,0.0923,NA,6,59,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,f8f61e36-b934-9410-e040-11ac0c4804cc,HPRT1P3
-2,139143961,139143961,1,snv_mnv,NA,NA,"broad,muse",2,COSN1791159,NA,AluSq2,FALSE,0.0816,NA,4,45,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,f8f61e36-b934-9410-e040-11ac0c4804cc,NA
-2,189898825,189898825,1,snv_mnv,NA,NA,"broad,muse",2,COSM3575445,rs200703515,NA,FALSE,0.08,NA,4,46,NA,NA,NA,Missense_Mutation,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,f8f61e36-b934-9410-e040-11ac0c4804cc,NA
-8,3245016,3245016,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSM3768787,NA,NA,FALSE,0.175,NA,7,33,NA,NA,NA,Splice_Site,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,f8f61e36-b934-9410-e040-11ac0c4804cc,NA

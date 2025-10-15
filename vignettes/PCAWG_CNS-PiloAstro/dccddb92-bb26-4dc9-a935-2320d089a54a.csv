@@ -1,5 +1,0 @@
-chromosome,start,end,width,type,1000genomes_AF,1000genomes_ID,Callers,NumCallers,cosmic,dbsnp,repeat_masker,dbsnp_somatic,VAF,n_vaf,t_alt_count,t_ref_count,n_alt_count,n_ref_count,model_score,Variant_Classification,signature_R1,signature_R2,signature_N3,snv_near_indel,total_cn,major_cn,minor_cn,karyotype,sample,gene
-12,21711220,21711220,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSM3670114,rs121918425,NA,FALSE,0.3784,NA,14,23,NA,NA,NA,Missense_Mutation,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,dccddb92-bb26-4dc9-a935-2320d089a54a,NA
-14,70008323,70008323,1,snv_mnv,1.9968e-4,rs548392145,"broad,muse,sanger",3,COSN4758728,rs548392145,AluSx,FALSE,0.1034,NA,3,26,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,dccddb92-bb26-4dc9-a935-2320d089a54a,NA
-15,89876690,89876690,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSM3670181,NA,NA,FALSE,0.5714,NA,12,9,NA,NA,NA,Missense_Mutation,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,dccddb92-bb26-4dc9-a935-2320d089a54a,"POLG,AC124068.2"
-5,116238864,116238864,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSN7858313,NA,NA,FALSE,0.3902,NA,16,25,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,3,2,1,2_1,dccddb92-bb26-4dc9-a935-2320d089a54a,NA

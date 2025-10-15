@@ -1,5 +1,0 @@
-chromosome,start,end,width,type,1000genomes_AF,1000genomes_ID,Callers,NumCallers,cosmic,dbsnp,repeat_masker,dbsnp_somatic,VAF,n_vaf,t_alt_count,t_ref_count,n_alt_count,n_ref_count,model_score,Variant_Classification,signature_R1,signature_R2,signature_N3,snv_near_indel,total_cn,major_cn,minor_cn,karyotype,sample,gene
-7,140453138,140453138,1,indel,NA,NA,"dkfz,sanger,smufin",3,COSM30730,rs727502902,NA,TRUE,0.4098,NA,25,36,NA,NA,0.931,In_Frame_Ins,NA,NA,NA,NA,3,2,1,2_1,a742a46d-2594-4efe-a701-4a2737ffae81,NA
-1,63826990,63826990,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSN16887284,rs748934315,L2b,FALSE,0.4583,NA,11,13,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,a742a46d-2594-4efe-a701-4a2737ffae81,AL049636.1
-12,102267003,102267003,1,snv_mnv,NA,NA,"broad,muse,sanger",3,COSN19338682,NA,NA,FALSE,NA,NA,NA,NA,NA,NA,NA,RNA,FALSE,FALSE,FALSE,FALSE,3,2,1,2_1,a742a46d-2594-4efe-a701-4a2737ffae81,"RNU6-1183P,DRAM1,HSPE1P4"
-8,17409400,17409400,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSM3670383,NA,NA,FALSE,0.1818,NA,6,27,NA,NA,NA,Missense_Mutation,FALSE,FALSE,FALSE,FALSE,3,2,1,2_1,a742a46d-2594-4efe-a701-4a2737ffae81,NA

@@ -1,7 +1,0 @@
-chromosome,start,end,width,type,1000genomes_AF,1000genomes_ID,Callers,NumCallers,cosmic,dbsnp,repeat_masker,dbsnp_somatic,VAF,n_vaf,t_alt_count,t_ref_count,n_alt_count,n_ref_count,model_score,Variant_Classification,signature_R1,signature_R2,signature_N3,snv_near_indel,total_cn,major_cn,minor_cn,karyotype,sample,gene
-3,18942108,18942108,1,snv_mnv,NA,NA,"broad,muse,sanger",3,COSN6573396,NA,Tigger5,FALSE,0.0976,NA,4,37,NA,NA,NA,RNA,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,e592e8db-b3d1-4ab5-ae0d-de4b5b4c0f1a,NA
-4,12374533,12374533,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSN17727450,NA,NA,FALSE,0.4167,NA,15,21,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,e592e8db-b3d1-4ab5-ae0d-de4b5b4c0f1a,NA
-5,45262464,45262464,1,snv_mnv,NA,NA,"broad,muse",2,COSM5029841,rs757283749,(CTG)n,FALSE,0.0769,NA,3,36,NA,NA,NA,Silent,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,e592e8db-b3d1-4ab5-ae0d-de4b5b4c0f1a,NA
-X,112537247,112537247,1,snv_mnv,NA,NA,"muse,sanger",2,COSN19535452,rs9778881,AluSx1,FALSE,0.2667,NA,4,11,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,1,1,0,1_0,e592e8db-b3d1-4ab5-ae0d-de4b5b4c0f1a,NA
-X,112537269,112537269,1,snv_mnv,NA,NA,"muse,sanger",2,COSN19535453,rs77190526,AluSx1,FALSE,0.2353,NA,4,13,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,1,1,0,1_0,e592e8db-b3d1-4ab5-ae0d-de4b5b4c0f1a,NA
-Y,6381736,6381736,1,snv_mnv,NA,NA,"muse,sanger",2,COSN19392962,rs35819855,NA,FALSE,0.16,NA,4,21,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,1,1,0,1_0,e592e8db-b3d1-4ab5-ae0d-de4b5b4c0f1a,NA

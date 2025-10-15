@@ -1,2 +1,0 @@
-chromosome,start,end,width,type,1000genomes_AF,1000genomes_ID,Callers,NumCallers,cosmic,dbsnp,repeat_masker,dbsnp_somatic,VAF,n_vaf,t_alt_count,t_ref_count,n_alt_count,n_ref_count,model_score,Variant_Classification,signature_R1,signature_R2,signature_N3,snv_near_indel,total_cn,major_cn,minor_cn,karyotype,sample,gene
-1,155372996,155372996,1,snv_mnv,NA,NA,"broad,muse",2,COSN7178588,NA,AluSq4,FALSE,0.1667,NA,4,20,NA,NA,NA,Intron,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,c4e048de-1d43-4fbd-8289-9279b16c8a3a,NA

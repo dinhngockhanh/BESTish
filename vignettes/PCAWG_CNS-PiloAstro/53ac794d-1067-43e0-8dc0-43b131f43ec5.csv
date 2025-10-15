@@ -1,5 +1,0 @@
-chromosome,start,end,width,type,1000genomes_AF,1000genomes_ID,Callers,NumCallers,cosmic,dbsnp,repeat_masker,dbsnp_somatic,VAF,n_vaf,t_alt_count,t_ref_count,n_alt_count,n_ref_count,model_score,Variant_Classification,signature_R1,signature_R2,signature_N3,snv_near_indel,total_cn,major_cn,minor_cn,karyotype,sample,gene
-10,68426723,68426723,1,snv_mnv,0.0023962,rs564094074,"broad,dkfz,muse,sanger",4,COSN17823691,rs564094074,MER106A,FALSE,0.1304,NA,6,40,NA,NA,NA,Intron,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,53ac794d-1067-43e0-8dc0-43b131f43ec5,NA
-11,37279236,37279236,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSN7004630,NA,L4,FALSE,0.3529,NA,12,22,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,53ac794d-1067-43e0-8dc0-43b131f43ec5,NA
-19,51931155,51931155,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSN7448416,NA,MER61D,FALSE,0.3636,NA,12,21,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,53ac794d-1067-43e0-8dc0-43b131f43ec5,NA
-8,140398748,140398748,1,snv_mnv,NA,NA,"broad,muse",2,COSN9603845,NA,NA,FALSE,0.0882,NA,3,31,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,53ac794d-1067-43e0-8dc0-43b131f43ec5,NA

@@ -83,7 +83,6 @@ run_replicates <- function(n_reps,
     set.seed(seed)
     sim_list <- vector("list", n_reps)
     for (i in seq_len(n_reps)) {
-        print(i)
         sim_i <- simulate_continuous_moran_tau(r, lambda_vec, u_vec, alpha, max_time, tau)
         sim_i$replicate <- i
         sim_list[[i]] <- sim_i

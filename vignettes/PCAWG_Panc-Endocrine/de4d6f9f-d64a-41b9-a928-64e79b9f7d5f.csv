@@ -1,7 +1,0 @@
-chromosome,start,end,width,type,1000genomes_AF,1000genomes_ID,Callers,NumCallers,cosmic,dbsnp,repeat_masker,dbsnp_somatic,VAF,n_vaf,t_alt_count,t_ref_count,n_alt_count,n_ref_count,model_score,Variant_Classification,signature_R1,signature_R2,signature_N3,snv_near_indel,total_cn,major_cn,minor_cn,karyotype,sample,gene
-X,145704708,145704709,2,indel,NA,NA,sanger,1,COSN19497487,NA,L1PA3,FALSE,0.1277,NA,6,41,NA,NA,0.759,IGR,NA,NA,NA,NA,1,1,0,1_0,de4d6f9f-d64a-41b9-a928-64e79b9f7d5f,NA
-16,77983589,77983589,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSN14858236,NA,MSTB1,FALSE,0.5238,NA,22,20,NA,NA,NA,Intron,FALSE,FALSE,FALSE,FALSE,1,1,0,1_0,de4d6f9f-d64a-41b9-a928-64e79b9f7d5f,NA
-19,10432272,10432272,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSM1148044,NA,NA,FALSE,0.3529,NA,18,33,NA,NA,NA,Nonsense_Mutation,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,de4d6f9f-d64a-41b9-a928-64e79b9f7d5f,"AC011511.4,RAVER1"
-4,32383967,32383967,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSN14632257,NA,AluY,FALSE,0.1087,NA,5,41,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,de4d6f9f-d64a-41b9-a928-64e79b9f7d5f,NA
-8,138007770,138007770,1,snv_mnv,NA,NA,"broad,muse",2,COSN16571482,NA,AluSz,FALSE,0.1212,NA,4,29,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,1,1,0,1_0,de4d6f9f-d64a-41b9-a928-64e79b9f7d5f,NA
-9,91616847,91616847,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSM4506907,rs752061279,NA,FALSE,0.2245,NA,11,38,NA,NA,NA,Silent,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,de4d6f9f-d64a-41b9-a928-64e79b9f7d5f,SHC3

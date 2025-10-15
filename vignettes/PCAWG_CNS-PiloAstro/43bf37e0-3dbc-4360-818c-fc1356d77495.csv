@@ -1,4 +1,0 @@
-chromosome,start,end,width,type,1000genomes_AF,1000genomes_ID,Callers,NumCallers,cosmic,dbsnp,repeat_masker,dbsnp_somatic,VAF,n_vaf,t_alt_count,t_ref_count,n_alt_count,n_ref_count,model_score,Variant_Classification,signature_R1,signature_R2,signature_N3,snv_near_indel,total_cn,major_cn,minor_cn,karyotype,sample,gene
-1,195322686,195322686,1,snv_mnv,3.9936e-4,rs553481360,"broad,dkfz,muse,sanger",4,COSN7982370,rs553481360,AT_rich,FALSE,0.2222,NA,6,21,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,43bf37e0-3dbc-4360-818c-fc1356d77495,NA
-10,126172732,126172732,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSM3670100,NA,NA,FALSE,0.3478,NA,8,15,NA,NA,NA,Silent,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,43bf37e0-3dbc-4360-818c-fc1356d77495,LHPP
-20,10335670,10335670,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSN14585014,rs779676026,NA,FALSE,0.2059,NA,7,27,NA,NA,NA,RNA,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,43bf37e0-3dbc-4360-818c-fc1356d77495,NA

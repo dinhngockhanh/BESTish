@@ -1,6 +1,0 @@
-chromosome,start,end,width,type,1000genomes_AF,1000genomes_ID,Callers,NumCallers,cosmic,dbsnp,repeat_masker,dbsnp_somatic,VAF,n_vaf,t_alt_count,t_ref_count,n_alt_count,n_ref_count,model_score,Variant_Classification,signature_R1,signature_R2,signature_N3,snv_near_indel,total_cn,major_cn,minor_cn,karyotype,sample,gene
-14,41745408,41745408,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSN9613504,NA,L1PA12,FALSE,0.4074,NA,11,16,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,6c642c0b-4dd0-406c-ac68-ea376802d61b,NA
-3,191626425,191626425,1,snv_mnv,0.0027955,rs187805652,"broad,dkfz,muse,sanger",4,COSN19576959,rs187805652,AT_rich,FALSE,0.4375,NA,14,18,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,6c642c0b-4dd0-406c-ac68-ea376802d61b,NA
-5,151279225,151279225,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSN7880793,NA,NA,FALSE,0.2982,NA,17,40,NA,NA,NA,Intron,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,6c642c0b-4dd0-406c-ac68-ea376802d61b,NA
-8,5804345,5804345,1,snv_mnv,0.0013978,rs539642937,"broad,muse",2,COSN16843120,rs539642937,NA,FALSE,0.0789,NA,3,35,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,6c642c0b-4dd0-406c-ac68-ea376802d61b,NA
-X,42493940,42493940,1,snv_mnv,0.0021192,NA,"broad,dkfz,muse,sanger",4,COSN7524222,rs764162241,NA,FALSE,0.3846,NA,10,16,NA,NA,NA,lincRNA,FALSE,FALSE,FALSE,FALSE,1,1,0,1_0,6c642c0b-4dd0-406c-ac68-ea376802d61b,NA

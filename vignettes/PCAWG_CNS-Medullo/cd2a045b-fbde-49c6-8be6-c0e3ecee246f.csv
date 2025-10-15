@@ -1,7 +1,0 @@
-chromosome,start,end,width,type,1000genomes_AF,1000genomes_ID,Callers,NumCallers,cosmic,dbsnp,repeat_masker,dbsnp_somatic,VAF,n_vaf,t_alt_count,t_ref_count,n_alt_count,n_ref_count,model_score,Variant_Classification,signature_R1,signature_R2,signature_N3,snv_near_indel,total_cn,major_cn,minor_cn,karyotype,sample,gene
-2,36426884,36426884,1,snv_mnv,NA,NA,"broad,dkfz,muse",3,COSN19250968,NA,NA,FALSE,0.4848,NA,16,17,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,cd2a045b-fbde-49c6-8be6-c0e3ecee246f,NA
-2,206732527,206732527,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSN17351047,NA,AluJr,FALSE,0.3704,NA,10,17,NA,NA,NA,IGR,FALSE,FALSE,TRUE,FALSE,2,1,1,1_1,cd2a045b-fbde-49c6-8be6-c0e3ecee246f,NA
-4,45993820,45993820,1,snv_mnv,NA,NA,"broad,muse,sanger",3,COSN19522236,NA,AluYb8,FALSE,0.1707,NA,7,34,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,3,2,1,2_1,cd2a045b-fbde-49c6-8be6-c0e3ecee246f,RN7SKP199
-7,66863418,66863418,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSN18812895,NA,NA,FALSE,0.5185,NA,14,13,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,cd2a045b-fbde-49c6-8be6-c0e3ecee246f,NA
-7,71371199,71371199,1,snv_mnv,NA,NA,"broad,dkfz,muse,sanger",4,COSN17510923,NA,NA,FALSE,0.4571,NA,16,19,NA,NA,NA,Intron,FALSE,FALSE,FALSE,FALSE,2,1,1,1_1,cd2a045b-fbde-49c6-8be6-c0e3ecee246f,NA
-X,106042576,106042576,1,snv_mnv,0.0021192,rs182984240,"dkfz,muse,sanger",3,COSN8567177,rs182984240,NA,FALSE,0.96,NA,24,1,NA,NA,NA,IGR,FALSE,FALSE,FALSE,FALSE,1,1,0,1_0,cd2a045b-fbde-49c6-8be6-c0e3ecee246f,NA

@@ -1,2 +1,0 @@
-chromosome,start,end,width,type,1000genomes_AF,1000genomes_ID,Callers,NumCallers,VAF,cosmic,dbsnp,repeat_masker,t_alt_count,t_ref_count,dbsnp_somatic,signature_R1,signature_R2,signature_N3,snv_near_indel,Variant_Classification,total_cn,major_cn,minor_cn,karyotype,sample,gene
-X,140877948,140877948,1,snv_mnv,NA,NA,"dkfz,muse",2,0.0735,COSN8166334,rs868937225,(CATA)n,5,63,FALSE,FALSE,FALSE,FALSE,FALSE,IGR,2,1,1,1_1,f91a9af2-7909-099e-e040-11ac0c484205,NA
