@@ -1,13 +1,4 @@
 suppressPackageStartupMessages({
-    need <- c("pracma", "MASS", "ggplot2", "dplyr", "viridis", "gridExtra")
-    have <- rownames(installed.packages())
-    miss <- setdiff(need, have)
-    if (length(miss) > 0) {
-        stop(
-            "Missing R packages: ", paste(miss, collapse = ", "),
-            "\nInstall to R_LIBS_USER: ", Sys.getenv("R_LIBS_USER")
-        )
-    }
     library(pracma)
     library(MASS)
     library(ggplot2)
@@ -17,57 +8,58 @@ suppressPackageStartupMessages({
     library(gridExtra)
     library(parallel)
     library(pbapply)
-    # current_wd <- getwd()
-    current_wd <- "/Users/kndinh/Downloads/2025-10-05.Keito Taketomi"
+    ####################################################################
+    # library(DriverSelectionSweep)
+    ####################################################################
     path_R <- "/Users/kndinh/RESEARCH AND EVERYTHING/Projects/GITHUB/DriverSelectionSweep/R"
     setwd(path_R)
     files_sources <- list.files(pattern = "\\.[rR]$")
     sapply(files_sources, source)
-    setwd(current_wd)
+    ####################################################################
 })
-
+########################################################################
+setwd("/Users/kndinh/RESEARCH AND EVERYTHING/Projects/GITHUB/DriverSelectionSweep/vignettes")
+########################################################################
 options(stringsAsFactors = FALSE)
 set.seed(2025)
 #-----------------------------------------------Parameter specifications
-patient_ID <- "4240" ###################################################
-plot_nsimulations <- 20 ###############################################
-plot_tau <- 0.001 #######################################################
 make_centers <- function(minv, maxv, nb) minv + ((0:(nb - 1)) + 0.5) * ((maxv - minv) / nb)
-w1_min <- 1
-w1_max <- 1.3
-w1_nbins <- 20 ########################################################
-log10v0_min <- -7
-log10v0_max <- -4
-log10v0_nbins <- 20 ###################################################
-alpha <- 1 #############################################################
-w0 <- 1
-R <- 1e5
+plot_nsimulations <- 100 # number of simulations to plot for MAP estimate
+tau <- 0.01 # tau-leaping time step for simulations and inference
+w1_min <- 1 # lower bound for prior distribution of w1
+w1_max <- 1.3 # upper bound for prior distribution of w1
+w1_nbins <- 10 # number of bins for computing posterior distribution of w1
+log10v0_min <- -6 # lower bound for prior distribution of log10(v0)
+log10v0_max <- -3 # upper bound for prior distribution of log10(v0)
+log10v0_nbins <- 10 # number of bins for computing posterior distribution of log10(v0)
+alpha_min <- 0.5 # lower bound for prior distribution of alpha
+alpha_max <- 1 # upper bound for prior distribution of alpha
+alpha_nbins <- 10 # number of bins for computing posterior distribution of alpha
+w0 <- 1 # fixed value for w0
+R <- 11000 # fixed value for R
 grid <- expand.grid(
     w1 = make_centers(w1_min, w1_max, w1_nbins),
     log10v0 = make_centers(log10v0_min, log10v0_max, log10v0_nbins),
+    alpha = make_centers(alpha_min, alpha_max, alpha_nbins),
     KEEP.OUT.ATTRS = FALSE,
     stringsAsFactors = FALSE
 )
 grid$v0 <- 10^grid$log10v0
-#-------------------------------------------------------Input Fabre data
-path <- "/Users/kndinh/RESEARCH AND EVERYTHING/Projects/GITHUB/DriverSelectionSweep/data/ALLvariants_exclSynonymous_Xadj.txt"
-fabre <- read.table(path, header = TRUE, sep = "\t", stringsAsFactors = FALSE)
-fabre$Age <- as.numeric(fabre$Age)
-fabre$VAF <- as.numeric(fabre$VAF)
-fabre <- subset(
-    fabre,
-    Gene == "DNMT3A" &
-        SardID == patient_ID &
-        grepl("\\bR882H\\b", AAChange.refGene, ignore.case = TRUE)
-)
-fabre <- fabre[order(fabre$Age), ]
-patient_age <- fabre$Age
-patient_vaf <- fabre$VAF
-outdir <- paste0("Results_Fabre_", patient_ID)
+#----------------------------------------------------Input McKerrel data
+path <- "/Users/kndinh/RESEARCH AND EVERYTHING/Projects/GITHUB/DriverSelectionSweep/data/McKerrel_2015_SNVs.csv"
+data <- read.csv(path, stringsAsFactors = FALSE)
+data <- data[which(data$Codon == "p.R882H"), ]
+data$Age <- as.numeric(data$Age)
+data$VAF <- as.numeric(data$VAF.... / 100)
+data <- data[order(data$Age), ]
+data <- subset(data, is.finite(Age) & is.finite(VAF))
+patient_age <- data$Age
+patient_vaf <- data$VAF
+outdir <- "Results_McKerrel"
 if (!dir.exists(outdir)) dir.create(outdir, recursive = TRUE)
 #----------------------------------------------------Necessary functions
 Jg <- function(N0, N1) {
-    eps <- .Machine$double.eps
+    eps <- 1e-15
 
     S <- N0 + N1 + eps
     matrix(c(
@@ -77,7 +69,7 @@ Jg <- function(N0, N1) {
 }
 
 A_analytic <- function(N0, N1, w0, w1, v0, alpha) {
-    eps <- .Machine$double.eps
+    eps <- 1e-15
 
     N0 <- max(eps, N0)
     N1 <- max(0, N1)
@@ -104,7 +96,7 @@ A_analytic <- function(N0, N1, w0, w1, v0, alpha) {
 }
 
 compute_expected_means_and_variances <- function(time_grids, h, w0, w1, v0, alpha) {
-    eps <- .Machine$double.eps
+    eps <- 1e-15
     #---Compute expected means
     delta <- (w1 - w0) * time_grids
     cval <- (v0 / (w1 - w0)) * expm1(delta)
@@ -147,11 +139,8 @@ compute_expected_means_and_variances <- function(time_grids, h, w0, w1, v0, alph
     ))
 }
 
-lik_log_analytic_Fabre <- function(param, patient_age, patient_vaf) {
-    library(mvtnorm)
-    library(Matrix)
-
-    eps <- .Machine$double.eps
+loglikelihood_cohort <- function(param, patient_age, patient_vaf) {
+    eps <- 1e-15
 
     w0 <- param[1]
     w1 <- param[2]
@@ -163,9 +152,9 @@ lik_log_analytic_Fabre <- function(param, patient_age, patient_vaf) {
     if (abs(w1 - w0) < 1e-12) {
         return(-Inf)
     }
+
     # ---- time grid (0 .. max(age)+1) ----
-    h <- 0.0001
-    # h <- 0.01
+    h <- 0.01
     tmax <- max(patient_age, na.rm = TRUE) + 1
     time_grids <- seq(0, tmax, by = h)
 
@@ -183,52 +172,28 @@ lik_log_analytic_Fabre <- function(param, patient_age, patient_vaf) {
         idx <- max(1, sum(time_grids <= a))
         vaf_mu[idx]
     }, numeric(1))
-    # ---- Fundamental matrix Phi (A_analytic) ----
-    Phi <- vector("list", length(time_grids))
-    Phi[[1]] <- diag(2)
-    for (k in 2:length(time_grids)) {
-        A <- A_analytic(N0_bar[k - 1], N1_bar[k - 1], w0, w1, v0, alpha)
-        Phi[[k]] <- Phi[[k - 1]] + A %*% Phi[[k - 1]] * h
-    }
 
-    # ---- Autocovariance kernel K(s, t) via analytic Jg ----
-    Kst <- function(s, t) {
-        si <- max(1, sum(time_grids <= s))
-        ti <- max(1, sum(time_grids <= t))
-        Vs <- matrix(c(
-            V11[si], V12[si],
-            V12[si], V22[si]
-        ), nrow = 2, byrow = TRUE)
-        Js <- Jg(N0_bar[si], N1_bar[si])
-        Jt <- Jg(N0_bar[ti], N1_bar[ti])
-        Ps <- Phi[[si]]
-        Pt <- Phi[[ti]]
-        # No Cholesky; use solve() directly in this small 2x2 context
-        as.numeric(Js %*% Vs %*% solve(t(Ps)) %*% t(Pt) %*% t(Jt))
-    }
-
-    # ---- Build observation mean/cov for given ages ----
+    # (No time-series covariance across different ages in cohort mode)
+    # Each observation i contributes a scalar variance via the delta method
+    # var_i = Jg(x_t) V_t Jg(x_t)^T / R
     n <- length(patient_age)
-
-    S <- matrix(0, n, n)
+    ll <- 0.0
     for (i in 1:n) {
-        for (j in i:n) {
-            kij <- Kst(patient_age[i], patient_age[j]) / R
-            S[i, j] <- kij
-            S[j, i] <- kij
-        }
+        ti <- max(1, sum(time_grids <= patient_age[i]))
+        x <- c(N0_bar[ti], N1_bar[ti])
+        Vt <- matrix(c(
+            V11[ti], V12[ti],
+            V12[ti], V22[ti]
+        ), nrow = 2, byrow = TRUE)
+        J <- Jg(x[1], x[2])
+        var_i <- as.numeric(J %*% Vt %*% t(J)) / R
+
+        resid <- patient_vaf[i] - mu[i]
+        ll <- ll + (-0.5) * (log(2 * pi * var_i) + (resid * resid) / var_i)
     }
 
-    S <- as.matrix(nearPD(S, corr = FALSE)$mat)
-
-    return(dmvnorm(patient_vaf, mean = mu, sigma = S, log = TRUE))
+    as.numeric(ll)
 }
-# print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-# print(lik_log_analytic_Fabre(
-#     c(w0, 1.1155, 10^-4.615, alpha, R),
-#     patient_age, patient_vaf
-# ))
-# print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
 # #-------------------------------------Compute log posterior distribution
 # timing <- system.time({
 #     #---Parallel version
@@ -237,16 +202,16 @@ lik_log_analytic_Fabre <- function(param, patient_age, patient_vaf) {
 #         cl,
 #         varlist = c(
 #             "patient_age", "patient_vaf",
-#             "grid", "w0", "R", "alpha",
-#             "lik_log_analytic_Fabre", "Jg", "A_analytic", "compute_expected_means_and_variances"
+#             "grid", "w0", "R",
+#             "loglikelihood_cohort", "Jg", "A_analytic", "compute_expected_means_and_variances"
 #         ),
 #         envir = environment()
 #     )
 #     loglikelihoods <- parLapply(
 #         cl = cl, 1:nrow(grid),
 #         function(i) {
-#             p <- c(w0, grid$w1[i], grid$v0[i], alpha, R)
-#             loglikelihood <- lik_log_analytic_Fabre(p, patient_age, patient_vaf)
+#             p <- c(w0, grid$w1[i], grid$v0[i], grid$alpha[i], R)
+#             loglikelihood <- loglikelihood_cohort(p, patient_age, patient_vaf)
 #         }
 #     )
 #     stopCluster(cl)
@@ -254,11 +219,11 @@ lik_log_analytic_Fabre <- function(param, patient_age, patient_vaf) {
 #     # #---Sequential version
 #     # grid$loglikelihood <- NA_real_
 #     # for (i in seq_len(nrow(grid))) {
-#     #     p <- c(w0, grid$w1[i], grid$v0[i], alpha, R)
+#     #     p <- c(w0, grid$w1[i], grid$v0[i], grid$alpha[i], R)
 #     #     print(p)
-#     #     loglikelihood <- tryCatch(lik_log_analytic_Fabre(p, patient_age, patient_vaf),
+#     #     loglikelihood <- tryCatch(loglikelihood_cohort(p, patient_age, patient_vaf),
 #     #         error = function(e) {
-#     #             message("lik_log_analytic_Fabre error at row ", i, ": ", e$message)
+#     #             message("loglikelihood_cohort error at row ", i, ": ", e$message)
 #     #             -Inf
 #     #         }
 #     #     )
@@ -270,18 +235,16 @@ lik_log_analytic_Fabre <- function(param, patient_age, patient_vaf) {
 # #-----------------------------------------Compute posterior distribution
 # grid$posterior <- exp(grid$loglikelihood - max(grid$loglikelihood))
 # #--------------------------------------------Save posterior distribution
-# saveRDS(grid, file = file.path(outdir, paste0("posterior_Fabre_", patient_ID, ".rds")))
+# saveRDS(grid, file = file.path(outdir, "posterior_McKerrel.rds"))
 # write.csv(grid,
-#     file = file.path(outdir, paste0("posterior_Fabre_", patient_ID, ".csv")),
+#     file = file.path(outdir, "posterior_McKerrel.csv"),
 #     row.names = FALSE
 # )
 ########################################################################
 ########################################################################
 ########################################################################
-outdir <- "/Users/kndinh/DINH LAB/RESULTS/2025-10-09.Keito Taketomi.Inference for DNMT3A VAF trajectories/Results_Fabre_4240/"
-
-
-grid <- readRDS(file.path(outdir, paste0("posterior_Fabre_", patient_ID, ".rds")))
+outdir <- "/Users/kndinh/DINH LAB/RESULTS/2025-10-20.Khanh Dinh.Inference for DNMT3A VAF trajectories/Results_McKerrel"
+grid <- readRDS(file.path(outdir, "posterior_McKerrel.rds"))
 #-------------------------------------Find MAP in posterior distribution
 #---Get MAP parameters from posterior distribution
 map_idx <- which.max(grid$posterior)
@@ -296,9 +259,9 @@ map_simulations <- run_replicates(
     r = R,
     lambda_vec = c(lambda0, lambda1),
     u_vec = c(u0, u1),
-    alpha = alpha,
+    alpha = map_row$alpha,
     max_time = max(patient_age, na.rm = TRUE) + 1,
-    tau = plot_tau,
+    tau = tau,
     seed = 123
 )
 map_simulations$vaf <- 0.5 * map_simulations$N1 / (map_simulations$N0 + map_simulations$N1)
@@ -307,12 +270,12 @@ map_simulations_mean <- map_simulations %>%
     summarise(across(where(is.numeric) & !matches("replicate"), mean, na.rm = TRUE))
 #---Compute mean and variance trajectories with MAP parameters
 map_mean_var_df <- compute_expected_means_and_variances(
-    time_grids = seq(0, max(patient_age, na.rm = TRUE) + 1, by = plot_tau),
-    h = plot_tau,
+    time_grids = seq(0, max(patient_age, na.rm = TRUE) + 1, by = tau),
+    h = tau,
     w0 = w0,
     w1 = map_row$w1,
     v0 = map_row$v0,
-    alpha = alpha
+    alpha = map_row$alpha
 )
 map_mean_var_df$vaf_var <- NA_real_
 for (i in 1:nrow(map_mean_var_df)) {
@@ -349,10 +312,11 @@ plot_marginal <- function(df, col) {
 }
 p1 <- plot_marginal(grid, "w1")
 p2 <- plot_marginal(grid, "log10v0")
-pdf(file.path(outdir, paste0("Marginal_distributions_Fabre_", patient_ID, ".pdf")), width = 20, height = 10)
-p <- gridExtra::arrangeGrob(p1, p2,
-    ncol = 2,
-    top = paste0("Marginal posterior distributions (Fabre - ", patient_ID, ")")
+p3 <- plot_marginal(grid, "alpha")
+pdf(file.path(outdir, "Marginal_distributions_McKerrel.pdf"), width = 30, height = 10)
+p <- gridExtra::arrangeGrob(p1, p2, p3,
+    ncol = 3,
+    top = "Marginal posterior distributions (McKerrel)"
 )
 grid.draw(p)
 dev.off()
@@ -376,11 +340,13 @@ plot_joint <- function(df, xcol, ycol) {
         theme_minimal(base_size = 30) +
         FORCE_WHITE
 }
-p <- plot_joint(grid, "w1", "log10v0")
-pdf(file.path(outdir, paste0("Joint_distributions_Fabre_", patient_ID, ".pdf")), width = 10, height = 10)
-p <- gridExtra::arrangeGrob(p,
-    ncol = 1,
-    top = paste0("Joint posterior distributions (Fabre - ", patient_ID, ")")
+p12 <- plot_joint(grid, "w1", "log10v0")
+p13 <- plot_joint(grid, "w1", "alpha")
+p23 <- plot_joint(grid, "log10v0", "alpha")
+pdf(file.path(outdir, "Joint_distribution_McKerrel.pdf"), width = 30, height = 10)
+p <- gridExtra::arrangeGrob(p12, p13, p23,
+    ncol = 3,
+    top = "Joint posterior distributions (McKerrel)"
 )
 grid.draw(p)
 dev.off()
@@ -388,14 +354,15 @@ dev.off()
 p <- ggplot() +
     geom_ribbon(
         data = map_mean_var_df,
-        aes(x = time, ymin = vaf_lowerCI, ymax = vaf_upperCI),
-        fill = "#BC3C29", alpha = 0.3
+        aes(x = time, ymin = pmax(0, vaf_lowerCI), ymax = pmin(0.5, vaf_upperCI)),
+        fill = "#BC3C29", alpha = 0.2
     ) +
-    geom_line(data = map_simulations, aes(x = time, y = vaf, group = replicate), color = "#0072B5", size = 1, alpha = 0.2) +
+    geom_line(data = map_simulations, aes(x = time, y = vaf, group = replicate), color = "#BC3C29", size = 1, alpha = 0.2) +
     geom_line(data = map_mean_var_df, aes(x = time, y = vaf_mu), color = "#BC3C29", size = 5) +
-    geom_line(data = map_simulations_mean, aes(x = time, y = vaf), color = "#0072B5", linetype = "dotted", size = 5) +
-    geom_point(data = fabre, aes(x = Age, y = VAF), color = "white", size = 14) +
-    geom_point(data = fabre, aes(x = Age, y = VAF), color = "#00A087", size = 10) +
+    # geom_line(data = map_simulations_mean, aes(x = time, y = vaf), color = "#0072B5", linetype = "dotted", size = 5) +
+    geom_point(data = data, aes(x = Age, y = VAF), color = "white", size = 16) +
+    geom_point(data = data, aes(x = Age, y = VAF), color = "#BC3C29", size = 13) +
+    scale_y_continuous(limits = c(0, 0.5)) +
     labs(
         x = "Age",
         y = "Variant Allele Frequency (VAF)",
@@ -404,6 +371,9 @@ p <- ggplot() +
     theme_minimal(base_size = 50) +
     FORCE_WHITE +
     theme(legend.position = "none")
-pdf(file.path(outdir, paste0("VAF_trajectories_Fabre_", patient_ID, ".pdf")), width = 30, height = 15)
+pdf(file.path(outdir, "VAF_trajectories_McKerrel.pdf"), width = 30, height = 15)
+print(p)
+dev.off()
+png(file.path(outdir, "VAF_trajectories_McKerrel.png"), width = 30, height = 15, units = "in", res = 600)
 print(p)
 dev.off()

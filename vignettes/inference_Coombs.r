@@ -28,15 +28,15 @@ plot_nsimulations <- 100 # number of simulations to plot for MAP estimate
 tau <- 0.01 # tau-leaping time step for simulations and inference
 w1_min <- 1 # lower bound for prior distribution of w1
 w1_max <- 1.3 # upper bound for prior distribution of w1
-w1_nbins <- 5 # number of bins for computing posterior distribution of w1
-log10v0_min <- -7 # lower bound for prior distribution of log10(v0)
-log10v0_max <- -4 # upper bound for prior distribution of log10(v0)
-log10v0_nbins <- 5 # number of bins for computing posterior distribution of log10(v0)
+w1_nbins <- 10 # number of bins for computing posterior distribution of w1
+log10v0_min <- -6 # lower bound for prior distribution of log10(v0)
+log10v0_max <- -3 # upper bound for prior distribution of log10(v0)
+log10v0_nbins <- 10 # number of bins for computing posterior distribution of log10(v0)
 alpha_min <- 0.5 # lower bound for prior distribution of alpha
 alpha_max <- 1 # upper bound for prior distribution of alpha
-alpha_nbins <- 5 # number of bins for computing posterior distribution of alpha
+alpha_nbins <- 10 # number of bins for computing posterior distribution of alpha
 w0 <- 1 # fixed value for w0
-R <- 1e5 # fixed value for R
+R <- 11000 # fixed value for R
 grid <- expand.grid(
     w1 = make_centers(w1_min, w1_max, w1_nbins),
     log10v0 = make_centers(log10v0_min, log10v0_max, log10v0_nbins),
@@ -45,16 +45,17 @@ grid <- expand.grid(
     stringsAsFactors = FALSE
 )
 grid$v0 <- 10^grid$log10v0
-#------------------------------------------------------Input Watson data
-path <- "/Users/kndinh/RESEARCH AND EVERYTHING/Projects/GITHUB/DriverSelectionSweep/data/watson.csv"
-watson <- read.csv(path, stringsAsFactors = FALSE)
-watson$Age <- as.numeric(watson$Age)
-watson$VAF <- as.numeric(watson$VAF)
-watson <- watson[order(watson$Age), ]
-watson <- subset(watson, is.finite(Age) & is.finite(VAF))
-patient_age <- watson$Age
-patient_vaf <- watson$VAF
-outdir <- "Results_Watson"
+#------------------------------------------------------Input Coombs data
+path <- "/Users/kndinh/RESEARCH AND EVERYTHING/Projects/GITHUB/DriverSelectionSweep/data/Coombs_2017_no_treatment_SNVs.csv"
+data <- read.csv(path, stringsAsFactors = FALSE)
+data <- data[which(data$AA.change == "p.R882H"), ]
+data$Age <- as.numeric(data$Age.at.blood.test)
+data$VAF <- as.numeric(data$VAF.in.normal)
+data <- data[order(data$Age), ]
+data <- subset(data, is.finite(Age) & is.finite(VAF))
+patient_age <- data$Age
+patient_vaf <- data$VAF
+outdir <- "Results_Coombs"
 if (!dir.exists(outdir)) dir.create(outdir, recursive = TRUE)
 #----------------------------------------------------Necessary functions
 Jg <- function(N0, N1) {
@@ -138,7 +139,7 @@ compute_expected_means_and_variances <- function(time_grids, h, w0, w1, v0, alph
     ))
 }
 
-lik_log_analytic_Watson <- function(param, patient_age, patient_vaf) {
+loglikelihood_cohort <- function(param, patient_age, patient_vaf) {
     eps <- 1e-15
 
     w0 <- param[1]
@@ -202,7 +203,7 @@ lik_log_analytic_Watson <- function(param, patient_age, patient_vaf) {
 #         varlist = c(
 #             "patient_age", "patient_vaf",
 #             "grid", "w0", "R",
-#             "lik_log_analytic_Watson", "Jg", "A_analytic", "compute_expected_means_and_variances"
+#             "loglikelihood_cohort", "Jg", "A_analytic", "compute_expected_means_and_variances"
 #         ),
 #         envir = environment()
 #     )
@@ -210,7 +211,7 @@ lik_log_analytic_Watson <- function(param, patient_age, patient_vaf) {
 #         cl = cl, 1:nrow(grid),
 #         function(i) {
 #             p <- c(w0, grid$w1[i], grid$v0[i], grid$alpha[i], R)
-#             loglikelihood <- lik_log_analytic_Watson(p, patient_age, patient_vaf)
+#             loglikelihood <- loglikelihood_cohort(p, patient_age, patient_vaf)
 #         }
 #     )
 #     stopCluster(cl)
@@ -220,9 +221,9 @@ lik_log_analytic_Watson <- function(param, patient_age, patient_vaf) {
 #     # for (i in seq_len(nrow(grid))) {
 #     #     p <- c(w0, grid$w1[i], grid$v0[i], grid$alpha[i], R)
 #     #     print(p)
-#     #     loglikelihood <- tryCatch(lik_log_analytic_Watson(p, patient_age, patient_vaf),
+#     #     loglikelihood <- tryCatch(loglikelihood_cohort(p, patient_age, patient_vaf),
 #     #         error = function(e) {
-#     #             message("lik_log_analytic_Watson error at row ", i, ": ", e$message)
+#     #             message("loglikelihood_cohort error at row ", i, ": ", e$message)
 #     #             -Inf
 #     #         }
 #     #     )
@@ -234,15 +235,16 @@ lik_log_analytic_Watson <- function(param, patient_age, patient_vaf) {
 # #-----------------------------------------Compute posterior distribution
 # grid$posterior <- exp(grid$loglikelihood - max(grid$loglikelihood))
 # #--------------------------------------------Save posterior distribution
-# saveRDS(grid, file = file.path(outdir, "posterior_Watson.rds"))
+# saveRDS(grid, file = file.path(outdir, "posterior_Coombs.rds"))
 # write.csv(grid,
-#     file = file.path(outdir, "posterior_Watson.csv"),
+#     file = file.path(outdir, "posterior_Coombs.csv"),
 #     row.names = FALSE
 # )
 ########################################################################
 ########################################################################
 ########################################################################
-grid <- readRDS(file.path(outdir, "posterior_Watson.rds"))
+outdir <- "/Users/kndinh/DINH LAB/RESULTS/2025-10-20.Khanh Dinh.Inference for DNMT3A VAF trajectories/Results_Coombs"
+grid <- readRDS(file.path(outdir, "posterior_Coombs.rds"))
 #-------------------------------------Find MAP in posterior distribution
 #---Get MAP parameters from posterior distribution
 map_idx <- which.max(grid$posterior)
@@ -311,10 +313,10 @@ plot_marginal <- function(df, col) {
 p1 <- plot_marginal(grid, "w1")
 p2 <- plot_marginal(grid, "log10v0")
 p3 <- plot_marginal(grid, "alpha")
-pdf(file.path(outdir, "Marginal_distributions_Watson.pdf"), width = 30, height = 10)
+pdf(file.path(outdir, "Marginal_distributions_Coombs.pdf"), width = 30, height = 10)
 p <- gridExtra::arrangeGrob(p1, p2, p3,
     ncol = 3,
-    top = "Marginal posterior distributions (Watson)"
+    top = "Marginal posterior distributions (Coombs)"
 )
 grid.draw(p)
 dev.off()
@@ -341,10 +343,10 @@ plot_joint <- function(df, xcol, ycol) {
 p12 <- plot_joint(grid, "w1", "log10v0")
 p13 <- plot_joint(grid, "w1", "alpha")
 p23 <- plot_joint(grid, "log10v0", "alpha")
-pdf(file.path(outdir, "Joint_distributions_Watson.pdf"), width = 30, height = 10)
+pdf(file.path(outdir, "Joint_distributions_Coombs.pdf"), width = 30, height = 10)
 p <- gridExtra::arrangeGrob(p12, p13, p23,
     ncol = 3,
-    top = "Joint posterior distributions (Watson)"
+    top = "Joint posterior distributions (Coombs)"
 )
 grid.draw(p)
 dev.off()
@@ -352,14 +354,15 @@ dev.off()
 p <- ggplot() +
     geom_ribbon(
         data = map_mean_var_df,
-        aes(x = time, ymin = vaf_lowerCI, ymax = vaf_upperCI),
-        fill = "#BC3C29", alpha = 0.2
+        aes(x = time, ymin = pmax(0, vaf_lowerCI), ymax = pmin(0.5, vaf_upperCI)),
+        fill = "#0072B5", alpha = 0.2
     ) +
-    geom_line(data = map_simulations, aes(x = time, y = vaf, group = replicate), color = "#BC3C29", size = 1, alpha = 0.2) +
-    geom_line(data = map_mean_var_df, aes(x = time, y = vaf_mu), color = "#BC3C29", size = 5) +
+    geom_line(data = map_simulations, aes(x = time, y = vaf, group = replicate), color = "#0072B5", size = 1, alpha = 0.2) +
+    geom_line(data = map_mean_var_df, aes(x = time, y = vaf_mu), color = "#0072B5", size = 5) +
     # geom_line(data = map_simulations_mean, aes(x = time, y = vaf), color = "#0072B5", linetype = "dotted", size = 5) +
-    geom_point(data = watson, aes(x = Age, y = VAF), color = "white", size = 16) +
-    geom_point(data = watson, aes(x = Age, y = VAF), color = "#BC3C29", size = 13) +
+    geom_point(data = data, aes(x = Age, y = VAF), color = "white", size = 16) +
+    geom_point(data = data, aes(x = Age, y = VAF), color = "#0072B5", size = 13) +
+    scale_y_continuous(limits = c(0, 0.5)) +
     labs(
         x = "Age",
         y = "Variant Allele Frequency (VAF)",
@@ -368,9 +371,9 @@ p <- ggplot() +
     theme_minimal(base_size = 50) +
     FORCE_WHITE +
     theme(legend.position = "none")
-pdf(file.path(outdir, "VAF_trajectories_Watson.pdf"), width = 30, height = 15)
+pdf(file.path(outdir, "VAF_trajectories_Coombs.pdf"), width = 30, height = 15)
 print(p)
 dev.off()
-png(file.path(outdir, "VAF_trajectories_Watson.png"), width = 30, height = 15, units = "in", res = 600)
+png(file.path(outdir, "VAF_trajectories_Coombs.png"), width = 30, height = 15, units = "in", res = 600)
 print(p)
 dev.off()
