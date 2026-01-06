@@ -2,7 +2,7 @@ Package: BESTish
 Type: Package
 Version: 1.0.0
 Date: 2025-01-06
-Title: Inference of mutation and selection rates from time-series and cohort mutant VAF
+Title: Inference of mutation and selection rates from time-series and cohort mutant VAFs
 Authors@R: c(
     person("Khanh", "Dinh", email = "knd2127@columbia.edu", role = c("aut", "cre")),
     person("Keito", "Taketomi", email = "kt2849@columbia.edu", role = "aut"),
