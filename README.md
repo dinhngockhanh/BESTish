@@ -11,4 +11,3 @@ devtools::install_github("dinhngockhanh/DriverSelectionSweep")
 ##  Vignettes
 
 ##  References
-GITHUB_PAT=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

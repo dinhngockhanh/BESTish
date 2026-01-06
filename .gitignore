@@ -20,9 +20,3 @@
 *.DS_Store
 
 # Directories
-data/PCAWG/
-data/COSMIC/
-data/MSK-IMPACT/
-vignettes/kidney_paprcc_wgd_false/
-vignettes/liver_hcc_wgd_false/
-vignettes/lung_scc_wgd_false/

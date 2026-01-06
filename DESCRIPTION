@@ -1,0 +1,20 @@
+Package: BESTish
+Type: Package
+Version: 1.0.0
+Date: 2025-01-06
+Title: Inference of mutation and selection rates from time-series and cohort mutant VAF
+Authors@R: c(
+    person("Khanh", "Dinh", email = "knd2127@columbia.edu", role = c("aut", "cre")),
+    person("Keito", "Taketomi", email = "kt2849@columbia.edu", role = "aut"),
+    person("Ren-Yi", "Wang", email = "rw3170@columbia.edu", role = "aut")
+    )
+Description: Grid-based Bayesian inference methods to infer mutation rates and selection
+    coefficients from variant allele frequency (VAF) data of specific mutations
+    in longitudinal and population-level studies.
+    Mathematically derived closed-form likelihoods are implemented to enhance accuracy and efficiency.
+License: GPL (>= 2)
+Imports: 
+Suggests: 
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.3.2
