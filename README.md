@@ -10,7 +10,8 @@ devtools::install_github("dinhngockhanh/BESTish")
 
 ##  Vignettes
 
-The `vignettes` folder contains examples of using BESTish to infer mutation rates and selection coefficients for individual mutations from population-level data in [1,2], as tabulated in [3], and longitudinal data in [4].
+The `vignettes` folder contains examples of using BESTish to infer mutation rates and selection coefficients for individual mutations from population-level data in [1,2], as tabulated in [3], and longitudinal data in [4]:
+-   sfdsdfs
 
 
 For each dataset, the input consists of the list of VAF values and corresponding time points (in years).
