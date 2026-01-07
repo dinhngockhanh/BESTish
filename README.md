@@ -11,9 +11,9 @@ devtools::install_github("dinhngockhanh/BESTish")
 ##  Vignettes
 
 The `vignettes` folder contains examples of using BESTish to infer mutation rates and selection coefficients for individual mutations from longitudinal data in [1] and population-level data in [2,3], as tabulated in [4]:
--   File `data_processing.r` details our filtering process to determine potential drivers of clonal hematopoiesis (CH) from [1] and [4]. For each dataset, we further extract the variant allele frequency (VAF) values and corresponding time points (in years) for each potential CH driver.
--   File `longitudinal_inference.r` implements BESTish to compute the posterior distributions for the mutation rate and selection coefficient for each potential CH driver, given the corresponding (VAF, age) values from time-series data in [1].
--   File `cohort_inference.r` implements BESTish to infer the mutation rates and selection coefficients for CH drivers from population-level data in [4].
+-   File `data_processing.r` details our filtering process to determine potential drivers of clonal hematopoiesis (CH) from [1] and [4]. For each dataset, we further extract the variant allele frequency (VAF) values and corresponding time points (in years) for each potential CH driver. This file creates processed tables `fabre.csv`, `fabre_inference_list.csv`, `watson.csv` and `watson_inference_list.csv` for BESTish runs.
+-   File `longitudinal_inference.r` implements BESTish to compute the posterior distributions for the mutation rate and selection coefficient for each potential CH driver, given the corresponding (VAF, age) values from time-series data in [1] summarized in `fabre.csv` and `fabre_inference_list.csv`.
+-   File `cohort_inference.r` implements BESTish to infer the mutation rates and selection coefficients for CH drivers from population-level data in [4] summarized in `watson.csv` and `watson_inference_list.csv`.
 
 ##  References
 1.  Fabre MA, de Almeida JG, Fiorillo E, Mitchell E, Damaskou A, Rak J, Orrù V, Marongiu M, Chapman MS, Vijayabaskar MS, Baxter J. The longitudinal dynamics and natural history of clonal haematopoiesis. Nature 606:335-42 (2022). https://doi.org/10.1038/s41586-022-04785-z

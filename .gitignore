@@ -23,7 +23,7 @@
 
 # Others
 vignettes/Extra
-fabre.csv
-fabre_inference_list.csv
-watson.csv
-watson_inference_list.csv
+/fabre.csv
+/fabre_inference_list.csv
+/watson.csv
+/watson_inference_list.csv
