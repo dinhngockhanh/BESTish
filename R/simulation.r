@@ -1,10 +1,3 @@
-if (!require("deSolve")) install.packages("deSolve")
-if (!require("ggplot2")) install.packages("ggplot2")
-if (!require("dplyr")) install.packages("dplyr")
-if (!require("reshape2")) install.packages("reshape2")
-if (!require("patchwork")) install.packages("patchwork")
-if (!require("zoo")) install.packages("zoo") # for na.approx
-
 library(deSolve)
 library(ggplot2)
 library(dplyr)

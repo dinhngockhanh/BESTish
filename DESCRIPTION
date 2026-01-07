@@ -14,6 +14,15 @@ Description: Grid-based Bayesian inference methods to infer mutation rates and s
     Mathematically derived closed-form likelihoods are implemented to enhance accuracy and efficiency.
 License: GPL (>= 2)
 Imports: 
+    mvtnorm,
+    Matrix,
+    deSolve,
+    ggplot2,
+    dplyr,
+    reshape2,
+    patchwork,
+    zoo,
+    numDeriv
 Suggests: 
 Encoding: UTF-8
 LazyData: true

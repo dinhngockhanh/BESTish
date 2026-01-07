@@ -20,3 +20,6 @@
 *.DS_Store
 
 # Directories
+
+# Vignettes
+vignettes/Extra
