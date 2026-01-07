@@ -1,4 +1,4 @@
-#   Inference of mutation and selection rates from time-series and cohort mutant VAF datasets
+#   Inference of mutation and selection rates from time-series and cohort mutant variant allele frequency datasets
 
 ##  Installation
 
@@ -11,10 +11,7 @@ devtools::install_github("dinhngockhanh/BESTish")
 ##  Vignettes
 
 The `vignettes` folder contains examples of using BESTish to infer mutation rates and selection coefficients for individual mutations from population-level data in [1,2], as tabulated in [3], and longitudinal data in [4]:
--   sfdsdfs
-
-
-For each dataset, the input consists of the list of VAF values and corresponding time points (in years).
+-   File `data_processing.r` details our filtering process to determine potential drivers of clonal hematopoiesis (CH) from [3] and [4]. For each dataset, we further extract the variant allele frequency (VAF) values and corresponding time points (in years).
 
 ##  References
 1.  McKerrell T, Park N, Moreno T, Grove CS, Ponstingl H, Stephens J, Crawley C, Craig J, Scott MA, Hodkinson C, Baxter J. Leukemia-associated somatic mutations drive distinct patterns of age-related clonal hemopoiesis. Cell Reports 10:1239-45 (2015). https://doi.org/10.1016/j.celrep.2015.02.005
