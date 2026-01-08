@@ -1,10 +1,6 @@
-library(deSolve)
-library(ggplot2)
-library(dplyr)
-library(reshape2)
-library(patchwork)
-library(zoo)
-library(numDeriv)
+suppressPackageStartupMessages(library(deSolve))
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(numDeriv))
 
 # 1) SINGLE-RUN TAU-LEAP SIMULATION
 simulate_continuous_moran_tau <- function(r,
@@ -147,7 +143,7 @@ variance_ODE_equations <- function(t,
     for (j in 1:params$nCompartments) S[j, j] <- S_diag[j]
     for (j in 1:(params$nCompartments - 1)) S[j, j + 1] <- S_offdiag[j]
 
-    A <- jacobian(f, N)
+    A <- numDeriv::jacobian(f, N)
     dVar <- A %*% V + t(A %*% V) + S
     list(dVar)
 }

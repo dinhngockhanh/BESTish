@@ -17,13 +17,18 @@ Imports:
     mvtnorm,
     Matrix,
     deSolve,
+    numDeriv,
     ggplot2,
+    viridis,
     dplyr,
     reshape2,
     patchwork,
     zoo,
     numDeriv,
-    crayon
+    parallel,
+    pbapply,
+    crayon,
+    gridExtra
 Suggests: 
 Encoding: UTF-8
 LazyData: true
