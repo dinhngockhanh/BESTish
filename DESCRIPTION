@@ -22,7 +22,8 @@ Imports:
     reshape2,
     patchwork,
     zoo,
-    numDeriv
+    numDeriv,
+    crayon
 Suggests: 
 Encoding: UTF-8
 LazyData: true

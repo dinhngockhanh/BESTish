@@ -1,3 +1,214 @@
+make_BESTish_grid <- function(w1 = NULL,
+                              w1_min = NULL,
+                              w1_max = NULL,
+                              w1_nbins = NULL,
+                              log10v0 = NULL,
+                              log10v0_min = NULL,
+                              log10v0_max = NULL,
+                              log10v0_nbins = NULL,
+                              alpha = NULL,
+                              alpha_min = NULL,
+                              alpha_max = NULL,
+                              alpha_nbins = NULL,
+                              w0 = NULL,
+                              w0_min = NULL,
+                              w0_max = NULL,
+                              w0_nbins = NULL,
+                              R = NULL,
+                              R_min = NULL,
+                              R_max = NULL,
+                              R_nbins = NULL) {
+    make_centers <- function(minv, maxv, nb) minv + ((0:(nb - 1)) + 0.5) * ((maxv - minv) / nb)
+    if (is.null(w0)) {
+        if (is.null(w0_min) || is.null(w0_max) || is.null(w0_nbins)) {
+            stop("w0_min, w0_max, and w0_nbins must all be provided when w0 is NULL")
+        }
+        w0 <- make_centers(w0_min, w0_max, w0_nbins)
+    }
+    if (is.null(w1)) {
+        if (is.null(w1_min) || is.null(w1_max) || is.null(w1_nbins)) {
+            stop("w1_min, w1_max, and w1_nbins must all be provided when w1 is NULL")
+        }
+        w1 <- make_centers(w1_min, w1_max, w1_nbins)
+    }
+    if (is.null(log10v0)) {
+        if (is.null(log10v0_min) || is.null(log10v0_max) || is.null(log10v0_nbins)) {
+            stop("log10v0_min, log10v0_max, and log10v0_nbins must all be provided when log10v0 is NULL")
+        }
+        log10v0 <- make_centers(log10v0_min, log10v0_max, log10v0_nbins)
+    }
+    if (is.null(alpha)) {
+        if (is.null(alpha_min) || is.null(alpha_max) || is.null(alpha_nbins)) {
+            stop("alpha_min, alpha_max, and alpha_nbins must all be provided when alpha is NULL")
+        }
+        alpha <- make_centers(alpha_min, alpha_max, alpha_nbins)
+    }
+    if (is.null(R)) {
+        if (is.null(R_min) || is.null(R_max) || is.null(R_nbins)) {
+            stop("R_min, R_max, and R_nbins must all be provided when R is NULL")
+        }
+        R <- make_centers(R_min, R_max, R_nbins)
+    }
+    BESTish_grid <- expand.grid(
+        w0 = w0,
+        w1 = w1,
+        log10v0 = log10v0,
+        alpha = alpha,
+        R = R,
+        KEEP.OUT.ATTRS = FALSE,
+        stringsAsFactors = FALSE
+    )
+    BESTish_grid$v0 <- 10^BESTish_grid$log10v0
+    return(BESTish_grid)
+}
+
+BESTish_inference <- function(data,
+                              grid = NULL,
+                              mode = NULL,
+                              time_step = 0.0005,
+                              parallel = FALSE,
+                              progress = TRUE) {
+    suppressPackageStartupMessages(library(crayon))
+    if (!is.data.frame(data)) {
+        stop("data must be a data frame")
+    }
+    if (!("Age" %in% names(data)) || !("VAF" %in% names(data))) {
+        stop("data must contain 'Age' and 'VAF' columns")
+    }
+    if (is.null(grid)) {
+        stop("BESTish grid must be provided. Check function make_BESTish_grid() for more information.")
+    }
+    if (!is.null(mode) && !(mode %in% c("longitudinal", "cohort"))) {
+        stop("mode must be either 'longitudinal' or 'cohort'")
+    }
+    data <- data[order(data$Age), ]
+    #---Compute log-likelihood at each grid point
+    if (parallel) {
+        suppressPackageStartupMessages(library(parallel))
+        suppressPackageStartupMessages(library(pbapply))
+        cl <- makePSOCKcluster(detectCores() - 1)
+        clusterExport(
+            cl,
+            varlist = c(
+                "loglikelihood_longitudinal", "loglikelihood_cohort",
+                "compute_expected_means_and_variances", "A_analytic", "Jg"
+            ),
+            envir = environment()
+        )
+        if (mode == "cohort") {
+            cat(bold(red("BESTish for cohort data in parallel computing mode...\n")))
+        } else if (mode == "longitudinal") {
+            cat(bold(red("BESTish for longitudinal data in parallel computing mode...\n")))
+        }
+        if (mode == "cohort") {
+            if (progress) {
+                loglikelihoods <- pblapply(
+                    cl = cl, X = 1:nrow(grid),
+                    FUN = function(i) {
+                        loglikelihood_cohort(
+                            parameter = grid[i, ],
+                            data = data,
+                            time_step = time_step
+                        )
+                    }
+                )
+            } else {
+                loglikelihoods <- parLapply(
+                    cl = cl, 1:nrow(grid),
+                    function(i) {
+                        loglikelihood_cohort(
+                            parameter = grid[i, ],
+                            data = data,
+                            time_step = time_step
+                        )
+                    }
+                )
+            }
+        } else if (mode == "longitudinal") {
+            if (progress) {
+                loglikelihoods <- pblapply(
+                    cl = cl, X = 1:nrow(grid),
+                    FUN = function(i) {
+                        loglikelihood_longitudinal(
+                            parameter = grid[i, ],
+                            data = data,
+                            time_step = time_step
+                        )
+                    }
+                )
+            } else {
+                loglikelihoods <- parLapply(
+                    cl = cl, 1:nrow(grid),
+                    function(i) {
+                        loglikelihood_longitudinal(
+                            parameter = grid[i, ],
+                            data = data,
+                            time_step = time_step
+                        )
+                    }
+                )
+            }
+        }
+        stopCluster(cl)
+        grid$loglikelihood <- unlist(loglikelihoods)
+    } else {
+        grid$loglikelihood <- NA_real_
+        if (mode == "cohort") {
+            cat(bold(red("BESTish for cohort data in sequential computing mode...\n")))
+        } else if (mode == "longitudinal") {
+            cat(bold(red("BESTish for longitudinal data in sequential computing mode...\n")))
+        }
+        if (progress) {
+            pb <- txtProgressBar(
+                min = 1, max = nrow(grid),
+                style = 3, width = 50, char = "+"
+            )
+        }
+        if (mode == "cohort") {
+            for (i in seq_len(nrow(grid))) {
+                if (progress) {
+                    setTxtProgressBar(pb, i)
+                    grid$loglikelihood[i] <- tryCatch(
+                        loglikelihood_cohort(
+                            parameter = grid[i, ],
+                            data = data,
+                            time_step = time_step
+                        ),
+                        error = function(e) {
+                            message("loglikelihood_cohort error at row ", i, " of BESTish grid system: ", e$message)
+                            -Inf
+                        }
+                    )
+                }
+            }
+        } else if (mode == "longitudinal") {
+            for (i in seq_len(nrow(grid))) {
+                if (progress) {
+                    setTxtProgressBar(pb, i)
+                    grid$loglikelihood[i] <- tryCatch(
+                        loglikelihood_longitudinal(
+                            parameter = grid[i, ],
+                            data = data,
+                            time_step = time_step
+                        ),
+                        error = function(e) {
+                            message("loglikelihood_longitudinal error at row ", i, " of BESTish grid system: ", e$message)
+                            -Inf
+                        }
+                    )
+                }
+            }
+        }
+        if (progress == TRUE) {
+            cat("\n")
+        }
+    }
+    #---Compute scaled posterior distribution across whole grid
+    grid$loglikelihood <- as.numeric(grid$loglikelihood)
+    grid$posterior <- exp(grid$loglikelihood - max(grid$loglikelihood, na.rm = TRUE))
+    return(grid)
+}
+
 Jg <- function(N0, N1) {
     S <- N0 + N1
     matrix(c(
@@ -133,23 +344,22 @@ compute_expected_means_and_variances <- function(time_grids, h, w0, w1, v0, alph
     ))
 }
 
-loglikelihood_cohort <- function(param,
-                                 patient_age,
-                                 patient_vaf,
-                                 h = 0.01) {
-    w0 <- param[1]
-    w1 <- param[2]
-    v0 <- param[3]
-    alpha <- param[4]
-    R <- param[5]
+loglikelihood_cohort <- function(parameter,
+                                 data,
+                                 time_step) {
+    w0 <- parameter$w0
+    w1 <- parameter$w1
+    v0 <- parameter$v0
+    alpha <- parameter$alpha
+    R <- parameter$R
     if (abs(w1 - w0) < .Machine$double.eps) {
         return(-Inf)
     }
     #---Create time grid from 0 to max age + 1 with input step size
-    time_grids <- seq(0, max(patient_age, na.rm = TRUE) + 1, by = h)
-    obs_indices <- pmax(1, findInterval(patient_age, time_grids))
+    time_grids <- seq(0, max(data$Age, na.rm = TRUE) + 1, by = time_step)
+    obs_indices <- pmax(1, findInterval(data$Age, time_grids))
     #---Compute closed-form mean and variance trajectory
-    mean_df <- compute_expected_means_and_variances(time_grids, h, w0, w1, v0, alpha)
+    mean_df <- compute_expected_means_and_variances(time_grids, time_step, w0, w1, v0, alpha)
     N0_bar <- mean_df$N0_bar
     N1_bar <- mean_df$N1_bar
     vaf_mu <- mean_df$vaf_mu
@@ -159,7 +369,7 @@ loglikelihood_cohort <- function(param,
     #---Find predicted means at the observed age points
     mu <- vaf_mu[obs_indices]
     #---Compute log-likelihood of observed VAFs under independent normal model
-    n <- length(patient_age)
+    n <- length(data$Age)
     ll <- 0.0
     for (i in 1:n) {
         ti <- obs_indices[i]
@@ -170,31 +380,30 @@ loglikelihood_cohort <- function(param,
         ), nrow = 2, byrow = TRUE)
         J <- Jg(x[1], x[2])
         var_i <- as.numeric(J %*% Vt %*% t(J)) / R
-        resid <- patient_vaf[i] - mu[i]
+        resid <- data$VAF[i] - mu[i]
         ll <- ll + (-0.5) * (log(2 * pi * var_i) + (resid * resid) / var_i)
     }
     return(as.numeric(ll))
 }
 
-loglikelihood_timeseries <- function(param,
-                                     patient_age,
-                                     patient_vaf,
-                                     h = 0.0005) {
-    library(mvtnorm)
-    library(Matrix)
-    w0 <- param[1]
-    w1 <- param[2]
-    v0 <- param[3]
-    alpha <- param[4]
-    R <- param[5]
+loglikelihood_longitudinal <- function(parameter,
+                                       data,
+                                       time_step) {
+    suppressPackageStartupMessages(library(mvtnorm))
+    suppressPackageStartupMessages(library(Matrix))
+    w0 <- parameter$w0
+    w1 <- parameter$w1
+    v0 <- parameter$v0
+    alpha <- parameter$alpha
+    R <- parameter$R
     if (abs(w1 - w0) < .Machine$double.eps) {
         return(-Inf)
     }
-    #---Create time grid from 0 to max age + 1 with input step size
-    time_grids <- seq(0, max(patient_age, na.rm = TRUE) + 1, by = h)
-    obs_indices <- pmax(1, findInterval(patient_age, time_grids))
+    #---Create time grid from 0 to max age + 1 year with input step size
+    time_grids <- seq(0, max(data$Age, na.rm = TRUE) + 1, by = time_step)
+    obs_indices <- pmax(1, findInterval(data$Age, time_grids))
     #---Compute closed-form mean and variance trajectory
-    mean_df <- compute_expected_means_and_variances(time_grids, h, w0, w1, v0, alpha)
+    mean_df <- compute_expected_means_and_variances(time_grids, time_step, w0, w1, v0, alpha)
     N0_bar <- mean_df$N0_bar
     N1_bar <- mean_df$N1_bar
     vaf_mu <- mean_df$vaf_mu
@@ -214,7 +423,7 @@ loglikelihood_timeseries <- function(param,
                 (N1_bar[k - 1] + N1_bar[k]) / 2,
                 w0, w1, v0, alpha
             )
-            Phi[[k]] <- Phi[[k - 1]] + A_mid %*% Phi[[k - 1]] * h
+            Phi[[k]] <- Phi[[k - 1]] + A_mid %*% Phi[[k - 1]] * time_step
         }
         last_computed <- target_idx
     }
@@ -235,7 +444,7 @@ loglikelihood_timeseries <- function(param,
         as.numeric(Js %*% Vs %*% temp)
     }
     #---Find predicted covariance matrix at the observed age points
-    n <- length(patient_age)
+    n <- length(data$Age)
     S <- matrix(0, n, n)
     for (i in 1:n) {
         for (j in i:n) {
@@ -247,5 +456,5 @@ loglikelihood_timeseries <- function(param,
     S <- (S + t(S)) / 2
     #---Return log-likelihood of observed VAFs under multivariate normal model
     S <- as.matrix(nearPD(S, corr = FALSE)$mat)
-    return(dmvnorm(patient_vaf, mean = mu, sigma = S, log = TRUE))
+    return(dmvnorm(data$VAF, mean = mu, sigma = S, log = TRUE))
 }
