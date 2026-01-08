@@ -2,7 +2,7 @@
 
 ##  Installation
 
-The BESTish (<u>B</u>ayesian <u>e</u>stimate for <u>s</u>elec<u>t</u>ion <u>i</u>ncorporating <u>s</u>caling-limit to detect mutant <u>h</u>eterogeneity) library can be installed with
+The BESTish (**B**ayesian **e**stimate for **s**elec**t**ion **i**ncorporating **s**caling-limit to detect mutant **h**eterogeneity) library can be installed with
 
 ```{r}
 devtools::install_github("dinhngockhanh/BESTish")
