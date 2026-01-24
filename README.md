@@ -2,6 +2,8 @@
 
 ##  Installation
 
+This is <u>underlined text</u>.
+
 The BESTish library (**B**ayesian **e**stimate for **s**elec**t**ion **i**ncorporating **s**caling-limit to detect mutant **h**eterogeneity) can be installed with
 
 ```{r}
