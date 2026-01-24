@@ -2,7 +2,9 @@
 
 ##  Installation
 
-The BESTish library (*B*ayesian **e**stimate for **s**elec**t**ion **i**ncorporating **s**caling-limit to detect mutant **h**eterogeneity) can be installed with
+This is <span style="text-decoration: underline;">underlined</span>.
+
+The BESTish library (**B**ayesian **e**stimate for **s**elec**t**ion **i**ncorporating **s**caling-limit to detect mutant **h**eterogeneity) can be installed with
 
 ```{r}
 devtools::install_github("dinhngockhanh/BESTish")
