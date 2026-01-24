@@ -2,7 +2,7 @@
 
 ##  Installation
 
-This is <span style="text-decoration: underline;">underlined</span>.
+This is <span style="text-decoration: underline;">underlined text</span>.
 
 The BESTish library (**B**ayesian **e**stimate for **s**elec**t**ion **i**ncorporating **s**caling-limit to detect mutant **h**eterogeneity) can be installed with
 
