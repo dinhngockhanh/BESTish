@@ -25,7 +25,9 @@ The `vignettes` folder contains examples of using BESTish to infer mutation rate
 -   File `longitudinal_inference.r` implements BESTish to compute the posterior distributions for the mutation rate and selection coefficient for each potential CH driver, given the corresponding (VAF, age) values from time-series data in [2] summarized in `fabre.csv` and `fabre_inference_list.csv`.
 -   File `cohort_inference.r` implements BESTish to infer the mutation rates and selection coefficients for CH drivers from population-level data in [5] summarized in `watson.csv` and `watson_inference_list.csv`.
 
-Runtime depends on the complexity (i.e., number of parameters) and granularity (i.e. number of grid bins) of each specific dataset, and can take up to a few hours per mutation.
+Runtime depends on the complexity (i.e., number of parameters) and granularity (i.e., number of grid bins) of each specific dataset, and can take up to a few hours per mutation.
+Progress is visualized during the duration of inference.
+If the runtime is too long, we suggest reducing the grid sizes.
 
 ##  References
 1.  Wang RY, Dinh KN, Taketomi K, Pang G, King KY, Kimmel M. BESTish: A diffusion-approximation framework for inferring selection and mutation in clonal hematopoiesis. bioRxiv (2026). https://doi.org/10.64898/2026.01.27.702030
