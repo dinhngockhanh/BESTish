@@ -8,6 +8,8 @@ The BESTish library (Bayesian Estimate for SelecTion Incorporating Scaling-limit
 devtools::install_github("dinhngockhanh/BESTish")
 ```
 
+which usually takes under 1 minute.
+
 ### Software dependencies
 
 BESTish requires the following R packages:
@@ -21,6 +23,7 @@ The `vignettes` folder contains examples of using BESTish to infer mutation rate
 -   File `data_processing.r` details our filtering process to determine potential drivers of clonal hematopoiesis (CH) from [2] and [5]. For each dataset, we further extract the variant allele frequency (VAF) values and corresponding time points (in years) for each potential CH driver. This file creates processed tables `fabre.csv`, `fabre_inference_list.csv`, `watson.csv` and `watson_inference_list.csv` for BESTish implementations.
 -   File `longitudinal_inference.r` implements BESTish to compute the posterior distributions for the mutation rate and selection coefficient for each potential CH driver, given the corresponding (VAF, age) values from time-series data in [2] summarized in `fabre.csv` and `fabre_inference_list.csv`.
 -   File `cohort_inference.r` implements BESTish to infer the mutation rates and selection coefficients for CH drivers from population-level data in [5] summarized in `watson.csv` and `watson_inference_list.csv`.
+Runtime depends on the complexity (i.e., number of parameters) and granularity (i.e. number of grid bins) of each specific dataset, and can take up to a few hours per mutation.
 
 ##  References
 1.  Wang RY, Dinh KN, Taketomi K, Pang G, King KY, Kimmel M. BESTish: A diffusion-approximation framework for inferring selection and mutation in clonal hematopoiesis. bioRxiv (2026). https://doi.org/10.64898/2026.01.27.702030
