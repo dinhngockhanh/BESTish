@@ -8,6 +8,13 @@ The BESTish library (Bayesian Estimate for SelecTion Incorporating Scaling-limit
 devtools::install_github("dinhngockhanh/BESTish")
 ```
 
+### Software dependencies
+
+BESTish requires the following R packages:
+-   `dplyr` - data manipulation and transformation
+-   `tidyr` - data tidying utilities
+-   `readxl` - reading Excel files 
+
 ##  Vignettes
 
 The `vignettes` folder contains examples of using BESTish to infer mutation rates and selection coefficients for individual mutations from longitudinal data in [2] and population-level data in [3,4], as tabulated in [5]:
