@@ -2,26 +2,17 @@
 
 ##  Installation
 
-The BESTish library (Bayesian Estimate for SelecTion Incorporating Scaling-limit to detect mutant Heterogeneity) [1] can be installed with
+The [BESTish](https://doi.org/10.64898/2026.01.27.702030) (Bayesian Estimate for SelecTion Incorporating Scaling-limit to detect mutant Heterogeneity) library can be installed with
 
 ```{r}
 devtools::install_github("dinhngockhanh/BESTish")
 ```
 
-which usually takes under 1 minute.
-
-### Software dependencies
-
-BESTish requires the following R packages:
--   `dplyr` - data manipulation and transformation
--   `tidyr` - data tidying utilities
--   `readxl` - reading Excel files 
-
 ##  Vignettes
 
-The `vignettes` folder contains examples of using BESTish to infer mutation rates and selection coefficients for individual mutations from longitudinal data in [2] and population-level data in [3,4], as tabulated in [5]:
+The `vignettes` folder contains examples of using BESTish to infer mutation rates and selection coefficients for individual mutations from longitudinal data in [Fabre et al.](https://doi.org/10.1038/s41586-022-04785-z) and population-level data in [McKerrell et al.](https://doi.org/10.1016/j.celrep.2015.02.005) and [Coombs et al.](https://doi.org/10.1016/j.stem.2017.07.010), as tabulated in [Watson et al.](https://doi.org/10.1126/science.aay9333):
 
--   File `data_processing.r` details our filtering process to determine potential drivers of clonal hematopoiesis (CH) from [2] and [5]. For each dataset, we further extract the variant allele frequency (VAF) values and corresponding time points (in years) for each potential CH driver. This file creates processed tables `fabre.csv`, `fabre_inference_list.csv`, `watson.csv` and `watson_inference_list.csv` for BESTish implementations.
+-   File `data_processing.r` details our filtering process to determine potential drivers of clonal hematopoiesis (CH) from [Fabre et al.](https://doi.org/10.1038/s41586-022-04785-z) and [Watson et al.](https://doi.org/10.1126/science.aay9333). For each dataset, we further extract the variant allele frequency (VAF) values and corresponding time points (in years) for each potential CH driver. This file creates processed tables `fabre.csv`, `fabre_inference_list.csv`, `watson.csv` and `watson_inference_list.csv` for BESTish implementations.
 -   File `longitudinal_inference.r` implements BESTish to compute the posterior distributions for the mutation rate and selection coefficient for each potential CH driver, given the corresponding (VAF, age) values from time-series data in [2] summarized in `fabre.csv` and `fabre_inference_list.csv`.
 -   File `cohort_inference.r` implements BESTish to infer the mutation rates and selection coefficients for CH drivers from population-level data in [5] summarized in `watson.csv` and `watson_inference_list.csv`.
 
